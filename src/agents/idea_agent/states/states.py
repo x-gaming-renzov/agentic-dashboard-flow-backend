@@ -6,7 +6,7 @@ class IdeasDetails(BaseModel):
     name: str = Field(description="The name of the idea.")
     one_liner: str = Field(description="The one liner of the idea. Must be punchy and intriuging.")
     detailed_description: str = Field(description="The detailed and comprehensive description of the idea.")
-    idea_type: Optional[str] = Field(description="Type of the idea. Can be 'offer', 'event', 'promotion', 'monetization', 'marketing', 'other'.")
+    idea_type: Optional[str] = Field(description="Type of the idea. Can be 'offer', 'community-event', 'marketing', 'other'.")
 
 class IdeaDetailResponse(BaseModel):
     ideas_details: List[IdeasDetails] = Field(description="List of ideas details")

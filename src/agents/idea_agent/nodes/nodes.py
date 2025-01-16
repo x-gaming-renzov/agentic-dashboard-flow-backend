@@ -61,7 +61,7 @@ def generate_factors(IdeaState: IdeaState) -> IdeaState:
 
     return IdeaState
 
-def generate_ideas(IdeaState: IdeaState) -> IdeaState:
+def generate_ideas_node(IdeaState: IdeaState) -> IdeaState:
     metrics_dicts = get_metrics_dicts(IdeaState.metrics)
     focus_metric = get_metrics_dicts(['0'])
 

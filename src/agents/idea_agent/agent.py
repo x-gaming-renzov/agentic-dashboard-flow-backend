@@ -7,7 +7,7 @@ def get_graph():
     graph = StateGraph(IdeaState)
 
     graph.add_node("generate_factors", generate_factors)
-    graph.add_node("generate_ideas", generate_ideas)
+    graph.add_node("generate_ideas", generate_ideas_node)
 
     graph.add_edge(START, "generate_factors")
     graph.add_edge("generate_factors", "generate_ideas")
@@ -15,3 +15,29 @@ def get_graph():
 
     compiled_graph = graph.compile()
     return compiled_graph
+
+def generate_ideas(metrics : list[str], 
+                   segments : list[int], 
+                   human_remark : str = "What are in-app purchase ideas opportunities for this segments?", 
+                   num_ideas : int = 3) -> list[Any]:
+    state = IdeaState(metrics=metrics, human_remark=human_remark, num_ideas=num_ideas, segments=segments)
+    graph = get_graph()
+
+    output = graph.invoke(state)
+
+    return output
+
+def register_ideas(ideas_details : list[IdeasDetails], segments : list[str], factors : str) -> None:
+    mongo_db = get_mongo_db()['ideas']
+    try:
+        last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
+    except TypeError:
+        last_id = 0
+    ideas_json = [idea.model_dump() for idea in ideas_details]
+    for idea in ideas_json:
+        last_id += 1
+        idea['_id'] = str(last_id)
+        idea['segments'] = segments
+        idea['factors'] = factors
+        mongo_db.insert_one(idea)
+    return None
