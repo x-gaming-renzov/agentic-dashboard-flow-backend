@@ -18,12 +18,17 @@ def get_graph():
     graph.add_node("generate_instructions", generate_instructions)
     graph.add_node("generate_query", generate_query)
     graph.add_node("execute_query", execute_query)
+    graph.add_node("qa_test", qa_test)
 
     graph.add_edge(START, "generate_instructions")
     graph.add_edge("generate_instructions", "generate_query")
     graph.add_edge("generate_query", "execute_query")
     graph.add_conditional_edges("execute_query", should_retry,{
-        "generate_query" : "generate_query",
+        "generate_query" : "generate_instructions",
+        "END" : "qa_test"
+    })
+    graph.add_conditional_edges("qa_test", qa_filter, {
+        "generate_instructions" : "generate_instructions",
         "END" : END
     })
 
@@ -41,7 +46,7 @@ def get_data_from_db(query : str):
         db_type="postgresql",
         event_data=event_data,
         table_name="data",
-        query=query,
+        human_query=query,
         db_schema=schema
     )
 
@@ -95,14 +100,14 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         data = data.sort_values(by=values_name, ascending=False)
         data = data.reset_index(drop=True)
     elif metric_dict['chartType'] == 'metric':
-        data = pd.DataFrame(data, columns=['value', 'delta'])
+        data = pd.DataFrame(data, columns=['value'])
 
     else:
         data = pd.DataFrame(data)
 
     return data
 
-def generate_metric_plot(ids : list) -> Dict[str, str]:
+def generate_metric_plot(ids : list) -> List[str]:
     plots = []
     for id in ids:
         metric_data = fetch_metric_data(id)
@@ -131,8 +136,6 @@ def generate_metric_plot(ids : list) -> Dict[str, str]:
             y = metric_data[metric_data.columns[1]]
             base64_plot = get_base64_plot('pie', y, categories=x)
             plots.append(base64_plot)
-        else:
-            return "Invalid chart type"
         
     return plots
     
@@ -171,3 +174,11 @@ def get_base64_plot(plot_type, x, y=None, labels=None, categories=None):
 
     return base64_string
 
+def get_metrics_dicts(ids : list) -> List[Dict[str, Any]]:
+    metrics = []
+    for id in ids:
+        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+        if metric_dict is None:
+            return "Metric not found"
+        metrics.append(metric_dict)
+    return metrics

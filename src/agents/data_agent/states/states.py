@@ -11,6 +11,12 @@ class DataQuerryState(BaseModel):
     dialect: Optional[str] = Field(None, description="Dialect")
     db_schema: Optional[str] = Field(None, description="Database schema")
     should_retry: Optional[bool] = Field(None, description="Should retry")
+    qa_status : Optional[bool] = Field(None, description="QA Status")
+    human_query : Optional[str] = Field(None, description="Human query")
+
+class QaResponse(BaseModel):
+    ok : bool = Field(None, description="true if everything is ok")
+    remarks: Optional[str] = Field(None, description="Remarks on what is wrong")
 
 class QuerryResponse(BaseModel):
     querry: Optional[str] = Field(None, description="Querry string for script")

@@ -1,0 +1,103 @@
+Below is a concise framework—based on the concepts in the data provided—that you can use to organize and define a product’s L1 and L2 metrics. It includes the main “categories” of metrics you should consider (reach, activation, engagement, retention, and business-specific) as well as guidance on choosing a single “focus metric” that ties it all together.
+
+---
+
+## 1. Identify Your Focus Metric
+Your focus metric is the single metric that most directly reflects the long-term health or success of your product. It often represents “active usage” because it rolls up many different aspects—such as acquisition and retention—into one north-star indicator.
+
+**Examples**  
+- **Weekly Active Users (WAU)** for products used habitually (social networks, messaging apps)  
+- **Monthly Active Users (MAU)** for less frequent usage (bills payment portal)  
+- **Weekly Active Buyers** for ecommerce (where “active” means “purchased”)  
+- **Weekly Active Subscribers (WAS)** for media/subscription businesses
+
+**Key question**  
+> “If we improve this one metric, will the product’s long-term performance improve?”
+
+---
+
+## 2. Define Your Level 1 (L1) Metrics
+L1 metrics **complement** your focus metric. They either contribute directly to it (by helping more people become active) or act as guardrails so you don’t push growth at all costs and undermine the user experience.
+
+Typical L1 metric “categories” include:
+
+1. **Reach**  
+   - Reflects your potential user base.  
+   - E.g., number of people who have used the product in the last 3 months, number of paid accounts, or total install base.
+
+2. **Activation**  
+   - Tracks whether new users reach that first “aha” moment—i.e., the step that primes them for long-term usage.  
+   - E.g., “% of new users who make their first purchase within 7 days” or “% of new users who complete onboarding.”
+
+3. **Engagement**  
+   - Measures the depth of usage for active users.  
+   - E.g., “minutes watched per weekly active subscriber,” “items bought per weekly active buyer.”  
+   - Typically normalized (e.g., total minutes watched ÷ active subscribers) to get a “per user” view.
+
+4. **Retention**  
+   - Tracks whether users keep coming back over time.  
+   - Common short-term retention intervals include 7-day or 30-day.  
+   - Longer-term retention might be 60- or 90-day, depending on your product’s natural usage cycle.
+
+5. **Business-Specific**  
+   - Captures your unique value proposition and/or risk factors.  
+   - E.g., “good churn” on a dating app (people who churn because they found a partner) or “% of accounts whose balances increase month over month” for a financial wellness product.
+
+---
+
+## 3. Define Your Level 2 (L2) Metrics
+L2 metrics dig deeper inside each L1 category to isolate specific cohorts, platforms, or features that drive (or hinder) the top-line metrics.
+
+- **Example**: If an L1 metric is overall 7-day retention, an L2 metric might be 7-day retention *by platform* (iOS vs. Android), or *by region* (North America vs. EU).  
+- **Example**: If your L1 metric is engagement (e.g., “items bought per weekly active buyer”), an L2 metric could be “shopping cart abandonment rate,” which pinpoints a major friction point in the purchase funnel.
+
+L2 metrics help teams or individuals see exactly where to focus—e.g., “We’re losing iOS users faster than Android” or “Cart abandonment is highest on mobile web.”  
+
+Be careful not to overdo it. If you have too many sub-metrics, teams can lose sight of which ones truly matter. Keep only those that meaningfully align with your strategic goals.
+
+---
+
+## 4. Create a Metrics Hierarchy
+Most product organizations can structure their metrics like this:
+
+1. **Focus Metric** (top priority)  
+2. **Level 1 (L1) Metrics** (key complementary metrics that ensure healthy growth)  
+3. **Level 2 (L2) Metrics** (cohort/feature/platform breakdowns that drive each L1)
+
+When the hierarchy is aligned, improving an L2 metric (e.g., iOS 7-day retention) positively impacts the corresponding L1 metric (overall 7-day retention), which in turn supports the focus metric (active usage).
+
+---
+
+## 5. Operationalize and Iterate
+- **Set baselines and targets**: Know where you stand today, then choose a realistic but ambitious goal for each metric.  
+- **Monitor consistently**: Track them on a dashboard that’s visible to all relevant teams.  
+- **Review regularly**: Schedule weekly or monthly reviews to see if metrics are trending toward goals.  
+- **Adapt as the product evolves**: Your focus metric, L1, and L2 metrics might shift as you enter a new growth stage or launch a new product line.
+
+---
+
+## Putting It All Together: Example Template
+
+| Metric Hierarchy      | Example Metric                | Ownership    | Notes                                                             |
+|-----------------------|-------------------------------|-------------|-------------------------------------------------------------------|
+| **Focus Metric**      | Weekly Active Buyers (WAB)    | Product Lead | “Active” means making a purchase at least once per week           |
+| **L1: Reach**         | 3-month active users          | Growth       | Potential buyers who have visited/searched in the past 3 months   |
+| **L1: Activation**    | “First purchase w/in 7 days”  | Onboarding   | % of new visitors who purchase within first 7 days                |
+| **L1: Engagement**    | Items bought / WAB            | Product      | “Depth” of engagement for active buyers                           |
+| **L1: Retention**     | 30-day buyer retention        | Growth       | % of buyers who return to buy again next month                    |
+| **L1: Business-Specific** | Average purchase price     | Finance      | Reflects pricing strategy or promotions                           |
+| **L2: Engagement**    | Cart abandonment rate         | Product      | Sub-metric that drives “Items bought / WAB”                       |
+| **L2: Retention**     | 7-day retention by platform   | Growth       | Compare iOS vs. Android or other cohorts                          |
+| **L2: Business-Specific** | Good Churn vs. Bad Churn  | Product      | For subscription or membership-based products                     |
+
+Use this table or a similar layout to keep everyone aligned on which metrics matter most, why they matter, and who is responsible for them.
+
+---
+
+## Key Takeaways
+1. **Pick a single focus metric** that best encapsulates long-term product health.  
+2. **Use L1 metrics** to ensure growth is healthy (reach, activation, engagement, retention, business-specific).  
+3. **Add L2 metrics** to drill down further—but avoid metric overload.  
+4. **Review and iterate** as your product evolves, and ensure everyone understands how their work impacts the metrics.  
+
+By following this framework, you’ll be well on your way to developing a clear, actionable hierarchy of product metrics that aligns your entire organization around driving sustainable growth.
