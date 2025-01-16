@@ -119,42 +119,47 @@ def generate_metric_plot(ids : list) -> List[str]:
             return "No data found for the metric"
 
         metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+        title = metric_dict['name']
         if metric_dict['chartType'] == 'line':
             x = metric_data[metric_data.columns[0]]
             y = metric_data[metric_data.columns[1]]
             labels = [metric_dict['chartOptions']['xAxis'], metric_dict['chartOptions']['yAxis']]
-            base64_plot = get_base64_plot('line', x, y, labels)
+            
+            base64_plot = get_base64_plot('line', x, y, labels, title=title)
             plots.append(base64_plot)
         elif metric_dict['chartType'] == 'bar':
             x = metric_data[metric_data.columns[0]]
             y = metric_data[metric_data.columns[1]]
             labels = [metric_dict['chartOptions']['xAxis'], metric_dict['chartOptions']['yAxis']]
-            base64_plot = get_base64_plot('bar', x, y, labels)
+            base64_plot = get_base64_plot('bar', x, y, labels, title=title)
             plots.append(base64_plot)
         elif metric_dict['chartType'] == 'pie':
             x = metric_data[metric_data.columns[0]]
             y = metric_data[metric_data.columns[1]]
-            base64_plot = get_base64_plot('pie', y, categories=x)
+            base64_plot = get_base64_plot('pie', y, categories=x, title=title)
             plots.append(base64_plot)
         
     return plots
     
-def get_base64_plot(plot_type, x, y=None, labels=None, categories=None):
+def get_base64_plot(plot_type, x, y=None, labels=None, categories=None, title=None):
     # Create the plot based on the specified type
     plt.figure()
     if plot_type == 'line':
         plt.plot(x, y)
         plt.xlabel(labels[0])
         plt.ylabel(labels[1])
+        plt.title(title)
     elif plot_type == 'bar':
         plt.bar(x, y)
         plt.xlabel(labels[0])
         plt.ylabel(labels[1])
+        plt.title(title)
     elif plot_type == 'pie':
         if labels:
             plt.pie(x, labels=categories, autopct='%1.1f%%')
         else:
             plt.pie(x, autopct='%1.1f%%')
+        plt.title(title)
     else:
         raise ValueError("Unsupported plot type. Use 'line', 'bar', or 'pie'.")
 
@@ -167,11 +172,11 @@ def get_base64_plot(plot_type, x, y=None, labels=None, categories=None):
     base64_string = base64.b64encode(buf.read()).decode('utf-8')
     buf.close()
 
-    plt.show()
+    #plt.show()
 
     # Close the plot to free memory
     plt.close()
-
+    print(colored(f"Status: ", "green"), colored(f"Plot generated", "white"))
     return base64_string
 
 def get_metrics_dicts(ids : list) -> List[Dict[str, Any]]:
