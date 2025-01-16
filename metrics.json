@@ -1,0 +1,38 @@
+[
+	{
+		"_id": "1",
+		"name": "Timespend per session per player",
+		"description": "The average time a player spends in a session",
+		"query": "WITH session_durations AS (\n    SELECT \n        session_id,\n        MIN(time) AS min_time,\n        MAX(time) AS max_time,\n        (MAX(time) - MIN(time)) AS session_length_in_seconds\n    FROM \n        data\n    GROUP BY \n        session_id\n)\n\nSELECT \n    DATE(TO_TIMESTAMP(min_time)) AS day,\n    AVG(session_length_in_seconds / 60.0) AS avg_session_length_per_day_in_minutes\nFROM \n    session_durations\nGROUP BY \n    day\nORDER BY\n    day;",
+		"chartType": "line",
+		"chartOptions": {
+			"title": "Average session length per day",
+			"xAxis": "Day",
+			"yAxis": "Minutes"
+		}
+	},
+	{
+		"_id": "2",
+		"name": "Number of sessions per player",
+		"description": "The number of sessions a player has per day",
+		"query": "SELECT \n    date, \n    AVG(session_count) AS avg_sessions_per_user\nFROM (\n    SELECT \n        to_timestamp(time)::date AS date, \n        distinct_id,\n        COUNT(DISTINCT session_id) AS session_count\n    FROM \n        data\n    WHERE \n        time IS NOT NULL AND session_id IS NOT NULL\n    GROUP BY \n        to_timestamp(time)::date, distinct_id\n) AS user_sessions\nGROUP BY \n    date\nORDER BY \n    date;",
+		"chartType": "line",
+		"chartOptions": {
+			"title": "Average sessions per day",
+			"xAxis": "Day",
+			"yAxis": "Sessions"
+		}
+	},
+	{
+		"_id": "3",
+		"name": "DAU",
+		"description": "Daily Active Users",
+		"query": "SELECT \n    to_char(to_timestamp(time), 'YYYY-MM-DD') AS date, \n    COUNT(DISTINCT distinct_id) AS count_of_users \nFROM \n    data \nWHERE \n    event = 'player-join' \nGROUP BY \n    date \nORDER BY \n    date;",
+		"chartType": "line",
+		"chartOptions": {
+			"title": "Daily Active Users",
+			"xAxis": "Day",
+			"yAxis": "Users"
+		}
+	}
+]

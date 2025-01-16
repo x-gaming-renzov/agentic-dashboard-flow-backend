@@ -1,0 +1,20 @@
+event name, description
+player-join, when a player joins. Also includes time parameter (unix seconds) and name
+player-command, when player types a command, has command parameter which tells the command used
+player-quit, when a player leaves, some events have duration parameter which gives session length (seconds). also has reson parameter whcih tells reason for leaving
+player-interact, when player use mouse click.Has parameter item and block which tell us what was in their hand and what block did they interact with. 
+item-equip, When player equip an item. parameters olditem and newitem
+player-chat, When player chats. mesage parameter holds their message
+item-damage, when an item player is using is damaged due to use. has item parameter
+player-death, when a player dies due to any reason. will have killername if killed by a player
+block-break, when player break a block. block parameter has name of block brokn
+player-interact-entity, when player interact with ingame entity like a villager. entity parameter has holds what the entity was
+player-kill, when player kills an entity. if its a player, victimname, victimid are present. victimtype is always present
+item-pickup, when player picks up an item. item parameter has the item 
+player-craft, when player crafts something. item tells the item crafted
+player-item-drop, when player drop an item from inventory. item tells what the item was
+shear-entity, when player use shear
+player-points-change, from player points plugin. when points change due to any reason
+player-damage, when player damages someone, has victimid if another player is damaged
+player-damaged, when player is damaged by someone, has victimid if another player is the attacker
+block-place, when player places a block. block parameter tells the type of block placed

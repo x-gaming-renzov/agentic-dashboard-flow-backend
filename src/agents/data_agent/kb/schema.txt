@@ -1,0 +1,23 @@
+column name,data type,description
+event,TEXT NULL, a minecraft event from mixpanel. It is assoicated with players via their distinct_id. May have more properties
+time,BIGINT NULL, when the event happenend
+distinct_id,TEXT NULL, the unique identifier for a player
+command,TEXT NULL, from player-command event
+block,TEXT NULL, name of block from some events
+item,TEXT NULL, name of item from some events
+newitem,TEXT NULL, from player item-equip event
+olditem,TEXT NULL, from player item-equip event
+message,TEXT NULL, message from player-chat event
+damage,DOUBLE PRECISION NULL, damage amount from item damage event
+deathmessage,TEXT NULL, message from player-death event
+killername,TEXT NULL, if player is killed by another player, player-death event has this parameter
+entity,TEXT NULL, entity name from variuos events
+victimtype,TEXT NULL, when player kill someone, this tells the victim's entity type
+amount,DOUBLE PRECISION NULL, 
+victimname,TEXT NULL, when player kill another player, this tells the victim's name
+victimid,TEXT NULL, when player kill another player, this tells the victim's distinct_id
+pointsChange,DOUBLE PRECISION NULL, change in points when player-points-change event is called
+name,TEXT NULL, name of player from player-join event
+duration,DOUBLE PRECISION NULL, duration of session in seconds from player-join
+reason,TEXT NULL, reason for quitting from player-quit event
+session_id,INT NULL, gameplay session this row belongs to. a session is time and events between a player-join and player-quit event

@@ -1,0 +1,13 @@
+langchain
+langchain_community
+psycopg2-binary
+sqlalchemy
+python-dotenv
+langchain_openai
+langchainhub
+langgraph
+openai
+flask
+termcolor
+pymongo
+pandas
