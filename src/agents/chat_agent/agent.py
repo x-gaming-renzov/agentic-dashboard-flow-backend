@@ -3,6 +3,8 @@ from langchain_core.messages import AIMessage, HumanMessage
 
 from .nodes.nodes import *
 from .utils.databases import get_mongo_db as get_mongo_db_from_chat_agent
+from ..generate_l2.agent import ask_metric_agent_to_display_chart_node, register_metrics
+from ..generate_l2.states.states import ShouldGenerateNewMetric
 
 from ..data_agent.agent import *
 from ..idea_agent.agent import *
@@ -101,3 +103,69 @@ def ask_idea_agent_to_generate_idea(instructions : str, chat_id : str):
     return {
         'idea_ids' : idea_ids
     }
+
+def ask_metric_agent_to_display_chart(instructions : str, displayed_metrics : list[str], chat_id: str):
+    mongo_db = get_mongo_db_from_chat_agent()
+    chat = mongo_db['chats'].find_one({"_id" : chat_id})
+    response = ask_metric_agent_to_display_chart_node(instructions=instructions)
+
+    def genrate_response(metric_id : str):
+        plot = generate_metric_plot([metric_id])
+
+        content = [
+            {
+                "type" : "text",
+                "text" : f"Here's the plot for metric :"
+            },
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{plot}"},
+            }
+        ]
+
+        ai_message = AIMessage(
+            content = content
+        )
+
+        chat['chat_history'].append(ai_message.model_dump())
+
+        graph = get_graph()
+
+        out = graph.invoke({
+        "human_message": instructions,
+        "segment_ids" : chat['segments_ids'],
+        "metric_ids" : chat['metric_ids'],
+        "idea_ids" : chat['idea'],
+        "chat_history" : chat['chat_history']})
+
+        ai_message = AIMessage(content=str(out['reply']))
+        chat['chat_history'].append(ai_message.model_dump())
+
+        mongo_db['chats'].update_one({"_id" : chat_id}, {"$set" : {"chat_history" : chat['chat_history']}})
+
+        response =  {
+            "reply" : out['reply']
+        }
+
+        return response
+
+    if isinstance(response, ShouldGenerateNewMetric):
+        if not response.should_generate_new_metric:
+            reply = genrate_response(response.exsiting_metric_id)
+            if response.exsiting_metric_id in displayed_metrics:
+                reply['metric_ids'] = displayed_metrics
+            else:
+                displayed_metrics.append(response.exsiting_metric_id)
+                reply['metric_ids'] = displayed_metrics
+            
+        elif response.should_generate_new_metric:
+            metric = register_metrics([response.new_metric])
+            reply = genrate_response(metric[0])
+            displayed_metrics.append(metric[0])
+            reply['metric_ids'] = displayed_metrics
+
+    return reply
+            
+        
+
+
