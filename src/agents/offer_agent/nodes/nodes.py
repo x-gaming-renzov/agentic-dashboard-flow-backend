@@ -2,7 +2,7 @@ import os, pathlib, json, dotenv
 from termcolor import colored
 
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 from ..prompts.prompts import *
 from ..states.states import *
@@ -56,8 +56,8 @@ def generate_offers_node(OfferState : OfferState) -> OfferState:
     message = HumanMessage(content=content)
 
     response = model.invoke([message])
-
+    ai_message = AIMessage(content=response.content)
+    OfferState.chat_history = [message, ai_message]
     OfferState.offers = response.content
-    OfferState.chat_initial_system_prompt = content
 
     return OfferState

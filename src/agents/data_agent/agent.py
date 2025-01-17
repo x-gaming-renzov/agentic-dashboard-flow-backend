@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .nodes.nodes import *
 from .utils.databases import get_mongo_db, execute_sql_query
@@ -109,7 +109,40 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
 
 def generate_metric_plot(ids : list) -> List[str]:
     plots = []
-    for id in ids:
+    def _get_plot(id :str):
+        metric_data = fetch_metric_data(id)
+        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+        if metric_data is None:
+            return "Metric not found"
+        
+        if metric_data.shape[0] == 0:
+            return "No data found for the metric"
+
+        title = metric_dict['name']
+        if metric_dict['chartType'] == 'line':
+            x = metric_data[metric_data.columns[0]]
+            y = metric_data[metric_data.columns[1]]
+            labels = [metric_dict['chartOptions']['xAxis'], metric_dict['chartOptions']['yAxis']]
+            
+            base64_plot = get_base64_plot('line', x, y, labels, title=title)
+            return base64_plot
+        elif metric_dict['chartType'] == 'bar':
+            x = metric_data[metric_data.columns[0]]
+            y = metric_data[metric_data.columns[1]]
+            labels = [metric_dict['chartOptions']['xAxis'], metric_dict['chartOptions']['yAxis']]
+            base64_plot = get_base64_plot('bar', x, y, labels, title=title)
+            return base64_plot
+        elif metric_dict['chartType'] == 'pie':
+            x = metric_data[metric_data.columns[0]]
+            y = metric_data[metric_data.columns[1]]
+            base64_plot = get_base64_plot('pie', y, categories=x, title=title)
+            return base64_plot
+        elif metric_dict['chartType'] == 'metric':
+            return metric_data['value'][0]
+        
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(_get_plot, id) for id in ids]
+    """for id in ids:
         metric_data = fetch_metric_data(id)
         metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
         if metric_data is None:
@@ -137,8 +170,10 @@ def generate_metric_plot(ids : list) -> List[str]:
             x = metric_data[metric_data.columns[0]]
             y = metric_data[metric_data.columns[1]]
             base64_plot = get_base64_plot('pie', y, categories=x, title=title)
-            plots.append(base64_plot)
+            plots.append(base64_plot)"""
         
+    for future in as_completed(futures):
+        plots.append(future.result())
     return plots
     
 def get_base64_plot(plot_type, x, y=None, labels=None, categories=None, title=None):

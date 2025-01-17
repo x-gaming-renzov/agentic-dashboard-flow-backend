@@ -38,7 +38,7 @@ def register_new_chat(offers : Dict) -> None:
         "human_remark": offers['human_remark'],
         "idea": offers['idea'],
         "offers": offers['offers'],
-        "chat_initial_system_prompt": offers['chat_initial_system_prompt']
+        "chat_history": [message.model_dump() for message in offers['chat_history']]
     }
     last_id += 1
     offers_json['_id'] = str(last_id)
