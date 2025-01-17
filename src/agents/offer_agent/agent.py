@@ -29,7 +29,7 @@ def get_offers(metric_ids : list[str], segment_ids : list[str], human_remark : s
 def register_new_chat(offers : Dict) -> None:
     mongo_db = get_mongo_db()['chats']
     try:
-        last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
+        last_id = int(list(mongo_db.find())[-1]['_id'])
     except TypeError:
         last_id = 0
     offers_json = {

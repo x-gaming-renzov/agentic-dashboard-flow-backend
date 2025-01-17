@@ -23,3 +23,10 @@ class L2MetricsState(BaseModel):
     focus_metric: str = Field(None, description="Focus Metric")
     l2_instructions: Optional[str] = Field(None, description="Instructions for L2 Metrics")
 
+class NewMetricResponse(BaseModel):
+    new_metrics_to_display: MetricState = Field(None, description="New Metrics to Display")
+
+class ShouldGenerateNewMetric(BaseModel):
+    should_generate_new_metric: bool = Field(None, description="Should Generate New Metric")
+    exsiting_metric_id: Optional[str] = Field(None, description="Existing Metric ID. Populate this if no new metric generation is required. Reply with existing metric ID.")
+    new_metric: Optional[MetricState] = Field(None, description="New Metric. Populate this if new metric generation is required. Reply with new metric details.")

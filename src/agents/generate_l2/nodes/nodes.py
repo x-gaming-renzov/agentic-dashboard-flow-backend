@@ -5,6 +5,7 @@ from langchain_openai import ChatOpenAI
 
 from ..prompts.prompts import *
 from ..states.states import *
+from ..utils.databases import get_mongo_db as get_db
 
 from ...data_agent.agent import get_metrics_dicts
 
@@ -87,3 +88,32 @@ def get_l2_metrics_from_isntructions(L2MetricsState : L2MetricsState) -> L2Metri
 
     return L2MetricsState
 
+def ask_metric_agent_to_display_chart(instructions: str, displayed_metric_ids: list[str]) -> NewMetricResponse | None:
+    generator_model = model.with_structured_output(NewMetricResponse)
+    
+    mongo_db = get_db()['metrics']
+    metrics = list(mongo_db.find())
+
+    generator = display_metric_prompt | generator_model
+
+    response = generator.invoke({
+        "instructions": instructions
+    })
+
+    if isinstance(response, NewMetricResponse):
+        generator_model = model.with_structured_output(ShouldGenerateNewMetric)
+        generator = should_generate_new_metric_prompt | generator_model
+
+        response = generator.invoke({
+            "metric_details": response.new_metrics_to_display,
+            "existing_metrics": metrics
+        })
+
+        if isinstance(response, ShouldGenerateNewMetric):
+            return response
+        else:
+            print(colored(f"Error: ", "red"), colored(f"Response is not of type ShouldGenerateNewMetric", "white"))
+            return None
+    else:
+        print(colored(f"Error: ", "red"), colored(f"Response is not of type NewMetricResponse", "white"))
+        return None

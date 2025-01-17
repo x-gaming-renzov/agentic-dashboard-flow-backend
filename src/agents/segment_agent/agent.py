@@ -25,7 +25,7 @@ def generate_segments(metrics : list[str], human_remark : str, num_segments : in
 def register_segments(segments : list[SegmentState], metrics : list[str]) -> None:
     mongo_db = get_mongo_db()['segments']
     try:
-        last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
+        last_id = int(list(mongo_db.find())[-1]['_id'])
     except TypeError:
         last_id = 0
     segments_json = [segment.model_dump() for segment in segments]
