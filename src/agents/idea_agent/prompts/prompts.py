@@ -25,8 +25,8 @@ input_variables=["focus_metrics", "segment_name", "segment_details", "metrics", 
 
 ideas_prompt = PromptTemplate(
     template="""
-    You are liveops director of a game.
-Generate {num_ideas} ideas for the segment : {segment_name} to improve the focus metrics : {focus_metrics}.
+    You are liveops director of a game. You are expert at personalising game experience for different segments of players. You have been given data of a segment of players and their focus metrics.
+Generate {num_ideas} personalisation ideas for the segment : {segment_name} to improve the focus metrics : {focus_metrics}.
 Here's Humans remark : {human_remark}
 
 Details of segment : {segment_details}
