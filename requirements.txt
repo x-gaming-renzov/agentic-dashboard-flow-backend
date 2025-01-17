@@ -11,3 +11,5 @@ flask
 termcolor
 pymongo
 pandas
+gunicorn
+matplotlib
