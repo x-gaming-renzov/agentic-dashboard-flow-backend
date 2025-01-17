@@ -20,20 +20,21 @@ model = ChatOpenAI(model="gpt-4o-mini")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def generate_offers_node(OfferState : OfferState) -> OfferState:
-    metrics_dicts = get_metrics_dicts(OfferState.metric_ids)
     metric_plot = generate_metric_plot(OfferState.metric_ids)
 
-    mongo_db = get_mongo_db()['segments']
-    segments = mongo_db.find({"_id": {"$in": OfferState.segments_ids}})
+    mongo_db = get_mongo_db()
+    segments = mongo_db['segments'].find({"_id": {"$in": OfferState.segments_ids}})
     segments = list(segments)
     segments_names = [segment["name"] for segment in segments]
+    ideas = mongo_db['ideas'].find({"_id": {"$in": OfferState.idea}})
+    ideas = list(ideas)
 
     with open('kb/gdd.txt', 'r') as file:
         GDD = file.read()
 
     prompt = offer_prompt.invoke({
         "segment_names": segments_names,
-        "idea": OfferState.idea,
+        "idea": ideas,
         "segments": segments,
         "GDD": GDD,
         "human_remark": OfferState.human_remark
@@ -57,5 +58,6 @@ def generate_offers_node(OfferState : OfferState) -> OfferState:
     response = model.invoke([message])
 
     OfferState.offers = response.content
+    OfferState.chat_initial_system_prompt = content
 
     return OfferState
