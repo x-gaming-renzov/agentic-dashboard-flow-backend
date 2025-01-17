@@ -3,7 +3,6 @@ import pandas as pd
 import os, dotenv
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 import io
 import base64
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -11,6 +10,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from .nodes.nodes import *
 from .utils.databases import get_mongo_db, execute_sql_query
 dotenv.load_dotenv()
+
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 
 def get_graph():
     graph = StateGraph(DataQuerryState)
