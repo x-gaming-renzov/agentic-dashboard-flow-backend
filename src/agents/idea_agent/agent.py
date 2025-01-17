@@ -31,7 +31,7 @@ def register_ideas(ideas_details : list[IdeasDetails], segments : list[str], fac
     mongo_db = get_mongo_db()['ideas']
     idea_ids = []
     try:
-        last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
+        last_id = int(list(mongo_db.find())[-1]['_id'])
     except TypeError:
         last_id = 0
     ideas_json = [idea.model_dump() for idea in ideas_details]

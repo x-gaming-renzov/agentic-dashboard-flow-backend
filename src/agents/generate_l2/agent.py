@@ -34,7 +34,7 @@ def generate_l2_metrics(focus_metric: str, l1_metrics: List[str], remarks: Optio
 
 def register_metrics(metrics : List[MetricState]):
     mongo_db = get_mongo_db()['metrics']
-    last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
+    last_id = int(list(mongo_db.find())[-1]['_id'])
     metrics_json = [metric.model_dump() for metric in metrics]
     for metric in metrics_json:
         last_id += 1
