@@ -21,7 +21,7 @@ model = ChatOpenAI(model="gpt-4o-mini")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def chat_node(ChatState: ChatState) -> ChatState:
-    metric_plot = generate_metric_plot(ChatState.metric_ids)
+    #metric_plot = generate_metric_plot(ChatState.metric_ids)
 
     mongo_db = get_mongo_db()
 
@@ -58,8 +58,9 @@ def chat_node(ChatState: ChatState) -> ChatState:
 
     if isinstance(response, AIRepsonse):
         ChatState.reply = response.reply
-        ChatState.agent_instructions = response.agent_instructions.model_dump()
-        ChatState.is_asking_sub_agent = response.is_asking_sub_agent
+        if response.is_asking_sub_agent:
+            ChatState.is_asking_sub_agent = response.is_asking_sub_agent
+            ChatState.agent_instructions = response.agent_instructions
 
     return ChatState
     
