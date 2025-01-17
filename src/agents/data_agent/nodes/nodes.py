@@ -16,7 +16,6 @@ print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white"))
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
 model = ChatOpenAI(model="gpt-4o-mini")
-model_large = ChatOpenAI(model="gpt-4o")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def generate_instructions(DataQuerryState : DataQuerryState) -> DataQuerryState:

@@ -58,8 +58,8 @@ def chat_node(ChatState: ChatState) -> ChatState:
 
     if isinstance(response, AIRepsonse):
         ChatState.reply = response.reply
-        ChatState.tool_params = response.tool_params
-        ChatState.is_calling_tool = response.is_calling_tool
+        ChatState.agent_instructions = response.agent_instructions.model_dump()
+        ChatState.is_asking_sub_agent = response.is_asking_sub_agent
 
     return ChatState
     
