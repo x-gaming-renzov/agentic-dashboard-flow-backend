@@ -9,6 +9,8 @@ from ..generate_l2.states.states import ShouldGenerateNewMetric
 from ..data_agent.agent import *
 from ..idea_agent.agent import *
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 def get_graph():
     graph = StateGraph(ChatState)
 
@@ -156,6 +158,7 @@ def ask_metric_agent_to_display_chart(instructions : str, displayed_metrics : li
                 reply['metric_ids'] = displayed_metrics
             else:
                 displayed_metrics.append(response.exsiting_metric_id)
+                chat['metric_ids'] = displayed_metrics
                 reply['metric_ids'] = displayed_metrics
             
         elif response.should_generate_new_metric:
@@ -163,8 +166,26 @@ def ask_metric_agent_to_display_chart(instructions : str, displayed_metrics : li
             reply = genrate_response(metric[0])
             displayed_metrics.append(metric[0])
             reply['metric_ids'] = displayed_metrics
+            chat['metric_ids'] = displayed_metrics
+    
+    mongo_db['chats'].update_one({"_id" : chat_id}, {"$set" : {"metric_ids" : chat['metric_ids']}})
+
+    metric_ids = chat['metric_ids']
+    metric_dfs = []
+    
+    for metric_id in metric_ids:
+        metric_dfs.append({
+            "metric_id" : metric_id,
+            "metric_df" : fetch_metric_data(metric_id)
+        })
+        #print(metric_dfs)
+
+    reply['metric_dfs'] = metric_dfs
 
     return reply
+
+
+
             
         
 
