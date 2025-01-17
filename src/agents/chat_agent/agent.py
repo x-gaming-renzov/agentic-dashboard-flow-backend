@@ -5,6 +5,7 @@ from .nodes.nodes import *
 from .utils.databases import get_mongo_db as get_mongo_db_from_chat_agent
 
 from ..data_agent.agent import *
+from ..idea_agent.agent import *
 
 def get_graph():
     graph = StateGraph(ChatState)
@@ -86,3 +87,17 @@ your instructions was : {instructions}
     }
 
     return response
+
+def ask_idea_agent_to_generate_idea(instructions : str, chat_id : str):
+    mongo_db = get_mongo_db_from_chat_agent()
+    chat = mongo_db['chats'].find_one({"_id" : chat_id})
+
+    metric_ids = chat['metric_ids']
+    segment_ids = chat['segments_ids']
+
+    ideas = generate_ideas(metrics=metric_ids, segments=segment_ids, human_remark=instructions)
+    idea_ids = register_ideas(ideas_details=ideas['ideas_details'], segments=segment_ids, factors=ideas['factors'])
+
+    return {
+        'idea_ids' : idea_ids
+    }

@@ -138,7 +138,9 @@ def generate_metric_plot(ids : list) -> List[str]:
             base64_plot = get_base64_plot('pie', y, categories=x, title=title)
             return base64_plot
         elif metric_dict['chartType'] == 'metric':
-            return metric_data['value'][0]
+            x = metric_data[metric_data.columns[0]]
+            base64_plot = get_base64_plot('metric', x, title=title)
+            return base64_plot
         
     with ThreadPoolExecutor() as executor:
         futures = [executor.submit(_get_plot, id) for id in ids]
@@ -194,6 +196,10 @@ def get_base64_plot(plot_type, x, y=None, labels=None, categories=None, title=No
             plt.pie(x, labels=categories, autopct='%1.1f%%')
         else:
             plt.pie(x, autopct='%1.1f%%')
+        plt.title(title)
+    elif plot_type == 'metric':
+        # display single value in x as single bar 
+        plt.bar(0, x)
         plt.title(title)
     else:
         raise ValueError("Unsupported plot type. Use 'line', 'bar', or 'pie'.")

@@ -48,6 +48,7 @@ def generate_factors(IdeaState: IdeaState) -> IdeaState:
     ]
 
     for plot in plots:
+        print(plot[:min(100, len(plot))])
         content.append({
             "type": "image_url",
             "image_url": {"url": f"data:image/jpeg;base64,{plot}"},

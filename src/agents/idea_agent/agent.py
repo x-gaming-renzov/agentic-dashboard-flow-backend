@@ -29,6 +29,7 @@ def generate_ideas(metrics : list[str],
 
 def register_ideas(ideas_details : list[IdeasDetails], segments : list[str], factors : str) -> None:
     mongo_db = get_mongo_db()['ideas']
+    idea_ids = []
     try:
         last_id = int(mongo_db.find_one(sort=[("_id", -1)])['_id'])
     except TypeError:
@@ -40,4 +41,5 @@ def register_ideas(ideas_details : list[IdeasDetails], segments : list[str], fac
         idea['segments'] = segments
         idea['factors'] = factors
         mongo_db.insert_one(idea)
-    return None
+        idea_ids.append(idea['_id'])
+    return idea_ids
