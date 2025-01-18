@@ -107,7 +107,7 @@ def generate_new_chat(idea_id:str):
     chat_id = register_new_chat(offers= offers)
     logging.info(f"chat_id : {chat_id}")        
 
-    return chat_id
+    return {"chat_id" : chat_id}
 
 if __name__ == "__main__":
     # out = chat_agent(chat_id="2", human_message="What was dau yesterday?")
