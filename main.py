@@ -7,7 +7,7 @@ from firebase_functions import options
 dotenv.load_dotenv()
 
 from util import logger
-from backend import chat, data_agent, ask_idea_agent
+from backend import chat, data_agent, ask_idea_agent, generate_new_chat,ask_metric_agent
 from cors import cors_enabled
 
 # Initialize Flask app
@@ -83,3 +83,28 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /idea-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
+@https_fn.on_request(memory=options.MemoryOption.GB_1)
+@cors_enabled()
+def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
+    """
+    Endpoint to generate a new chat based on an idea ID.
+    Expects JSON input with 'idea_id'.
+    """
+    try:
+        # Parse the incoming request data
+        data = req.get_json()
+        idea_id = data.get('idea_id')
+
+        if not idea_id:
+            return https_fn.Response({'error': 'Invalid input. idea_id is required.'}, status=400)
+
+        logging.info(f"Received request to generate chat for idea_id: {idea_id}")
+
+        # Call the generate_new_chat function
+        chat_id = generate_new_chat(idea_id)
+
+        # Return the chat ID in the response
+        return https_fn.Response({'chat_id': chat_id}, status=200)
+    except Exception as e:
+        logging.error(f"Error in /generate-chat endpoint: {e}")
+        return https_fn.Response({'error': 'An error occurred while processing your request.'}, status=500)
