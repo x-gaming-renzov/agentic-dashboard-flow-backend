@@ -8,8 +8,7 @@ def cors_enabled(allowed_origins=None):
     :param allowed_origins: List of allowed origin domains 
                              If None, defaults to allowing all origins
     """
-    if allowed_origins is None:
-        allowed_origins = ['*']  # Allow all origins by default
+    allowed_origins = ['*']  
     
     def decorator(func):
         @functools.wraps(func)
