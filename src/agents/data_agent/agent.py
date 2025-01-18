@@ -89,8 +89,8 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         data = data.sort_values(by=yAxis_name, ascending=False)
         data = data.reset_index(drop=True)
     elif metric_dict['chartType'] == 'pie':
-        categories_name = metric_dict['chartOptions']['categories']
-        values_name = metric_dict['chartOptions']['values']
+        categories_name = metric_dict['chartOptions']['xAxis']
+        values_name = metric_dict['chartOptions']['yAxis']
         percentages = []
 
         data = pd.DataFrame(data, columns=[categories_name, values_name])

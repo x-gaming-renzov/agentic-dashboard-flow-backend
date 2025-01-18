@@ -117,7 +117,7 @@ def ask_metric_agent_to_display_chart(instructions : str, displayed_metrics : li
         content = [
             {
                 "type" : "text",
-                "text" : f"Here's the plot for metric :"
+                "text" : f"DISPLAY METRIC AGENT : Here's the plot for metric. I ahve displayed it to user. You can now continue conversation"
             },
             {
                 "type": "image_url",
