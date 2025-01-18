@@ -88,7 +88,7 @@ def get_l2_metrics_from_isntructions(L2MetricsState : L2MetricsState) -> L2Metri
 
     return L2MetricsState
 
-def ask_metric_agent_to_display_chart(instructions: str, displayed_metric_ids: list[str]) -> NewMetricResponse | None:
+def ask_metric_agent_to_display_chart_node(instructions: str) -> ShouldGenerateNewMetric | None:
     generator_model = model.with_structured_output(NewMetricResponse)
     
     mongo_db = get_db()['metrics']

@@ -43,4 +43,4 @@ def register_new_chat(offers : Dict) -> None:
     last_id += 1
     offers_json['_id'] = str(last_id)
     mongo_db.insert_one(offers_json)
-    return None
+    return offers_json['_id']
