@@ -62,7 +62,7 @@ def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /data-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
 @cors_enabled()
 def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -83,7 +83,7 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /idea-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
 @cors_enabled()
 def metric_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -110,7 +110,7 @@ def metric_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /metric-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
 @cors_enabled()
 def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -123,15 +123,15 @@ def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         idea_id = data.get('idea_id')
 
         if not idea_id:
-            return https_fn.Response({'error': 'Invalid input. idea_id is required.'}, status=400)
+            return {'error': 'Invalid input. idea_id is required.'}, 400
 
         logging.info(f"Received request to generate chat for idea_id: {idea_id}")
 
         # Call the generate_new_chat function
-        chat_id = generate_new_chat(idea_id)
+        response = generate_new_chat(idea_id)
 
         # Return the chat ID in the response
-        return chat_id,200
+        return response,200
     except Exception as e:
         logging.error(f"Error in /generate-chat endpoint: {e}")
-        return https_fn.Response({'error': 'An error occurred while processing your request.'}, status=500)
+        return {'error': 'An error occurred while processing your request.'}, 500
