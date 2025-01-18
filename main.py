@@ -85,6 +85,33 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1)
 @cors_enabled()
+def metric_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
+    """
+    Endpoint to handle metric display requests.
+    Expects JSON input with 'instructions', 'displayed_metrics', and 'chat_id'.
+    """
+    try:
+        data = req.get_json()
+        # print(data)
+        instructions = data.get('instructions')
+        displayed_metrics = data.get('displayed_metrics')
+        chat_id = data.get('chat_id')
+
+        if displayed_metrics is None:
+            displayed_metrics = []
+
+        if not instructions or not chat_id:
+            return {'error': 'Invalid input. instructions, displayed_metrics, and chat_id are required.'}, 400
+
+        response = ask_metric_agent(instructions, displayed_metrics, chat_id)
+        print(f"response fire : {response}")
+        return response,200
+    except Exception as e:
+        logging.error(f"Error in /metric-agent endpoint: {e}")
+        return {'error': 'An error occurred while processing your request.'}, 500
+
+@https_fn.on_request(memory=options.MemoryOption.GB_1)
+@cors_enabled()
 def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
     Endpoint to generate a new chat based on an idea ID.
@@ -104,7 +131,7 @@ def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         chat_id = generate_new_chat(idea_id)
 
         # Return the chat ID in the response
-        return https_fn.Response({'chat_id': chat_id}, status=200)
+        return chat_id,200
     except Exception as e:
         logging.error(f"Error in /generate-chat endpoint: {e}")
         return https_fn.Response({'error': 'An error occurred while processing your request.'}, status=500)
