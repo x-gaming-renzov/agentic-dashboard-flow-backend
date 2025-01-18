@@ -1,6 +1,6 @@
 import logging
 import re
-import pandas
+import pandas as pd
 import numpy as np
 
 # Configure logging
@@ -17,8 +17,6 @@ logger = logging.getLogger(__name__)
 def log_error(message, exception):
     """Log errors with consistent formatting."""
     logger.error(f"{message}: {str(exception)}")
-
-import pandas as pd
 
 def extract_columns_and_values(df: pd.DataFrame):
     """
