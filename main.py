@@ -2,6 +2,7 @@ import logging
 import dotenv
 from firebase_functions import https_fn
 from firebase_admin import initialize_app
+from firebase_functions import options
 
 dotenv.load_dotenv()
 
@@ -15,7 +16,7 @@ initialize_app()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-@https_fn.on_request()
+@https_fn.on_request(memory=options.MemoryOption.GB_1)
 @cors_enabled()
 def chat_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -40,7 +41,7 @@ def chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /chat endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request()
+@https_fn.on_request(memory=options.MemoryOption.GB_1)
 @cors_enabled()
 def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -61,7 +62,7 @@ def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         logging.error(f"Error in /data-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request()
+@https_fn.on_request(memory=options.MemoryOption.GB_1)
 @cors_enabled()
 def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -81,3 +82,4 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     except Exception as e:
         logging.error(f"Error in /idea-agent endpoint: {e}")
         return {'error': 'An error occurred while processing your request.'}, 500
+
