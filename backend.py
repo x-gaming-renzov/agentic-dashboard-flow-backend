@@ -17,7 +17,7 @@ def chat(chat_id,message):
     except Exception as e:
         logging.error(e)
         return {
-            "reply" : "Sorry, something went wrong. Please try again later."
+            "reply" : "Sorry, something went wrong. Please try to reframe."
         }
 
 def data_agent(chat_id,query):
@@ -28,7 +28,7 @@ def data_agent(chat_id,query):
         logging.error(e)
         traceback.print_exc()
         return {
-            "reply" : "Sorry, something went wrong. Please try again later."
+            "reply" : "Sorry, something went wrong. Please try to reframe."
         }
     
 def ask_idea_agent(chat_id, query,insight_id):
@@ -42,7 +42,7 @@ def ask_idea_agent(chat_id, query,insight_id):
     except Exception as e:
         logging.error(e)
         return {
-            "reply" : "Sorry, something went wrong. Please try again later."
+            "reply" : "Sorry, something went wrong. Please try to reframe."
         }
 
 def ask_metric_agent(instructions : str, displayed_metrics : list[str], chat_id: str):
