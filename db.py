@@ -47,3 +47,15 @@ def get_metric_ids_for_idea(idea_id):
     except Exception as e:
         log_error(f"Error retrieving metrics for idea ID {idea_id}", e)
         return []
+
+def insert_ideas_into_insight(idea_ids,insight_id):
+    """Inserts an array of idea IDs into the 'children' array of a specific insight."""
+    try:
+        logger.info(f"Inserting ideas into insight {insight_id}")
+        insights_collection = db["insights"]
+        insights_collection.update_one(
+            {"_id": insight_id},
+            {"$push": {"children": {"$each": [{"id": idea_id, "type": "idea"} for idea_id in idea_ids]}}}
+        )
+    except Exception as e:
+        logger.error(f"Error inserting ideas into insight {insight_id}: {e}")

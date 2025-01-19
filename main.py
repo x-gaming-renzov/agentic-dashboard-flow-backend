@@ -3,6 +3,7 @@ import dotenv
 from firebase_functions import https_fn
 from firebase_admin import initialize_app
 from firebase_functions import options
+import traceback
 
 dotenv.load_dotenv()
 
@@ -39,6 +40,7 @@ def chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         return response,200
     except Exception as e:
         logging.error(f"Error in /chat endpoint: {e}")
+        traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
@@ -60,6 +62,7 @@ def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         return response,200
     except Exception as e:
         logging.error(f"Error in /data-agent endpoint: {e}")
+        traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
@@ -72,15 +75,17 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     try:
         data = req.get_json()
         chat_id = data.get('chat_id')
+        insight_id = data.get('insight_id')
         query = data.get('query')
 
-        if not chat_id or not query:
-            return {'error': 'Invalid input. chat_id and query are required.'}
+        if not chat_id or not query or not insight_id:
+            return {'error': 'Invalid input. chat_id, insight_id and query are required.'}
 
-        response = ask_idea_agent(chat_id, query)
+        response = ask_idea_agent(chat_id, query,insight_id)
         return response,200
     except Exception as e:
         logging.error(f"Error in /idea-agent endpoint: {e}")
+        traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
@@ -108,6 +113,7 @@ def metric_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         return response,200
     except Exception as e:
         logging.error(f"Error in /metric-agent endpoint: {e}")
+        traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
@@ -134,4 +140,5 @@ def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         return response,200
     except Exception as e:
         logging.error(f"Error in /generate-chat endpoint: {e}")
+        traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500

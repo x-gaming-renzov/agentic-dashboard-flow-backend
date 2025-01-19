@@ -6,7 +6,7 @@ import pandas
 from src.agents.chat_agent.agent import  *
 from src.agents.offer_agent.agent import register_new_chat,get_offers
 from src.agents.data_agent.agent import get_metrics_dicts
-from db import get_metric_ids_for_idea
+from db import get_metric_ids_for_idea, insert_ideas_into_insight
 from util import extract_columns_and_values
 from pandas import DataFrame
 
@@ -31,9 +31,13 @@ def data_agent(chat_id,query):
             "reply" : "Sorry, something went wrong. Please try again later."
         }
     
-def ask_idea_agent(chat_id, query):
+def ask_idea_agent(chat_id, query,insight_id):
     try:
         response = ask_idea_agent_to_generate_idea(instructions=query, chat_id=chat_id)
+        if(response):
+            idea_ids = response["idea_ids"]
+            if(idea_ids):
+                insert_ideas_into_insight(idea_ids, insight_id)
         return response
     except Exception as e:
         logging.error(e)
