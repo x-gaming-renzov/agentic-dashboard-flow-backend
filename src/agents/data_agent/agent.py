@@ -78,6 +78,9 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
             pass
         data = data.sort_values(by=xAxis_name)
         data = data.reset_index(drop=True)
+        #check if x axis is datetime
+
+
     elif metric_dict['chartType'] == 'bar':
         xAxis_name = metric_dict['chartOptions']['xAxis']
         yAxis_name = metric_dict['chartOptions']['yAxis']
