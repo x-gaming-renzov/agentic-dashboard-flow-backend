@@ -3,7 +3,6 @@ import pandas as pd
 import os, dotenv
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 import io
 import base64
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -11,6 +10,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from .nodes.nodes import *
 from .utils.databases import get_mongo_db, execute_sql_query
 dotenv.load_dotenv()
+
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 
 def get_graph():
     graph = StateGraph(DataQuerryState)
@@ -78,9 +82,6 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
             pass
         data = data.sort_values(by=xAxis_name)
         data = data.reset_index(drop=True)
-        #check if x axis is datetime
-
-
     elif metric_dict['chartType'] == 'bar':
         xAxis_name = metric_dict['chartOptions']['xAxis']
         yAxis_name = metric_dict['chartOptions']['yAxis']
@@ -92,7 +93,11 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         values_name = metric_dict['chartOptions']['yAxis']
         percentages = []
 
-        data = pd.DataFrame(data, columns=[categories_name, values_name])
+        try:
+            data = pd.DataFrame(data, columns=[categories_name, values_name])
+        except Exception as e:
+            data = pd.DataFrame(data, columns=[values_name])
+            data[categories_name] = data.index
 
         sum_values = data[values_name].sum()
 
