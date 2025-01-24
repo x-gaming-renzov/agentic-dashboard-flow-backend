@@ -8,7 +8,7 @@ import traceback
 dotenv.load_dotenv()
 
 from util import logger
-from backend import chat, data_agent, ask_idea_agent, generate_new_chat,ask_metric_agent
+from backend import chat, data_agent, ask_idea_agent, generate_new_chat,ask_metric_agent,generate_direct_chat
 from cors import cors_enabled
 
 # Initialize Flask app
@@ -135,6 +135,32 @@ def generate_chat_endpoint(req: https_fn.Request) -> https_fn.Response:
 
         # Call the generate_new_chat function
         response = generate_new_chat(idea_id)
+
+        # Return the chat ID in the response
+        return response,200
+    except Exception as e:
+        logging.error(f"Error in /generate-chat endpoint: {e}")
+        traceback.print_exc()
+        return {'error': 'An error occurred while processing your request.'}, 500
+
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
+@cors_enabled()
+def generate_direct(req: https_fn.Request) -> https_fn.Response:
+    """
+    Endpoint to generate new chat, based on a single message
+    """
+    try:
+        # Parse the incoming request data
+        data = req.get_json()
+        message = data.get('message')
+
+        if not message:
+            return {'error': 'Invalid input. message is required.'}, 400
+
+        logging.info(f"Received request to generate chat for idea_id: {message}")
+
+        # Call the generate_new_chat function
+        response = generate_direct_chat(message)
 
         # Return the chat ID in the response
         return response,200

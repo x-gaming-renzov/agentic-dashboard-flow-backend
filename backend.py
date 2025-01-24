@@ -113,11 +113,42 @@ def generate_new_chat(idea_id:str):
 
     return {"chat_id" : chat_id}
 
+def generate_direct_chat(message:str):
+    segments = []
+    metrics = ["1","2","3","4"]
+    IDEA_PREFIX = os.getenv("IDEA_PREFIX")
+    CHAT_PREFIX = os.getenv("CHAT_PREFIX")
+
+    idea_remark = IDEA_PREFIX + " " + message
+    logging.info(f"idea_remark : {idea_remark}")
+    ideas = generate_ideas(metrics=metrics,
+                              segments=segments,
+                              num_ideas=1,
+                              human_remark=idea_remark)
+    
+    logging.info(f"ideas : {ideas}")
+    idea_ids = register_ideas(ideas_details=ideas['ideas_details'],
+               segments=ideas['segments'],
+               factors=ideas['factors'])
+    
+    chat_remark = CHAT_PREFIX + " " +  ideas["ideas_details"][0].detailed_description +  "\nThis idea is based on below human remark:\n" + idea_remark
+    logging.info(f"chat_remark : {chat_remark}")
+    
+    offers = get_offers(metric_ids=metrics, segment_ids=segments, human_remark=chat_remark, idea_ids=idea_ids)
+    logging.info(f"offers : {offers}")
+
+    chat_id = register_new_chat(offers)
+    logging.info(f"chat_id : {chat_id}")
+
+    return {"chat_id" : chat_id}
+
+
 if __name__ == "__main__":
     # out = chat_agent(chat_id="2", human_message="What was dau yesterday?")
     # out = data_agent(chat_id="2",query="What was dau yesterday?")
     # out = ask_idea_agent(chat_id="2", query="We should just shut this down")
     # out = ask_metric_agent(instructions="total player joins yesterday", displayed_metrics=[], chat_id="1")
     # out = ask_metric_agent(instructions="pie chart of events for last day", displayed_metrics=[], chat_id="1")
-    out = generate_new_chat(idea_id="2")
+    # out = generate_new_chat(idea_id="2")
+    out = generate_direct_chat("We should target increasing playtime of players who have less events")
     print(out)
