@@ -10,7 +10,7 @@ def extract_columns_and_values(df: pd.DataFrame, chartType: str) -> tuple:
     try:
         if df.empty:
             print("The provided DataFrame is empty.")
-            return [], []
+            return [], []   
 
         # Extract the column names
         columns = df.columns.tolist()
@@ -44,3 +44,5 @@ def extract_columns_and_values(df: pd.DataFrame, chartType: str) -> tuple:
     except Exception as e:
         print("Error while extracting columns and values from DataFrame", e)
         return [], []
+    
+

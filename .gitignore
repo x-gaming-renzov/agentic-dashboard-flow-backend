@@ -8,4 +8,5 @@ reddit_data.zip
 notebooks
 venv
 Minecraft
+__pycache__
 # sample_data
