@@ -14,6 +14,8 @@ def get_cohorts(segment_id):
     Segment details: {criteria}. 
     RULES: ONLY RETURN UUIDS IN SINGLE COLUMN"""
 
-    data = get_data_from_db(query)
+    data, query = get_data_from_db(query)
+
+    data = [row[0] for row in data]
 
     return data
