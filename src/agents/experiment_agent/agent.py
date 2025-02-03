@@ -15,3 +15,10 @@ def get_graph():
     graph.add_edge("get_item_details_node", END)
 
     return graph.compile()
+
+def get_experiment_ready_offer(chat_id: str, segment_id: Optional[List[str]] = []):
+    state = ExperimentState(chat_id=chat_id, segment_id=segment_id)
+    graph = get_graph()
+    out = graph.invoke(state)
+    offer_ids = [out['offer_dict'][offer_dict]['_id'] for offer_dict in out['offer_dict']]
+    return offer_ids
