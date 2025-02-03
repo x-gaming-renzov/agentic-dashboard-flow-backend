@@ -1,0 +1,22 @@
+,Armor Enchantments,,
+,,,
+Name,Description,Applies To,Conflicts With
+Aquaman,Grants Water Breathing effect.,Helmet,-
+Bunny Hop,Grants Jump Boost effect.,Boots,-
+Cold Steel,Applies Mining Fatigue effect to the attacker.,Chestplate,-
+Darkness Cloak,Applies Darkness effect to the attacker.,Chestplate,-
+Elemental Protection,"Reduces Poison, Magic, Wither, Lightning, Freeze damage.",All Armor,-
+Flame Walker,Creates magma blocks when walking over lava; immune to magma damage.,Boots,-
+Frost Walker,"Similar to Frost Walker, but with fire-related effects.",Boots,Flame Walker
+Fire Shield,"Like Thorns, but ignites the attacker.",Chestplate,-
+Ice Shield,Freezes and slows down the attacker.,Chestplate,-
+Hardened,Grants Damage Resistance effect on receiving damage.,Chestplate,-
+Night Vision,Grants Night Vision effect.,Helmet,-
+Rebound,Gives the effect of landing on a slime block.,Boots,-
+Feather Falling,Reduces fall damage significantly.,Boots,-
+Regrowth,"Restores hearts over time, regardless of food saturation.",Chestplate,-
+Saturation,Restores food and saturation over time.,Helmet,-
+Self-Destruction,Creates an explosion on death.,Chestplate,-
+Sonic,Grants Speed effect.,Boots,-
+Stopping Force,Reduces knockback when getting damage.,Leggings,-
+Treasure Hunter,Chance to find more loot in loot chests.,Helmet,-

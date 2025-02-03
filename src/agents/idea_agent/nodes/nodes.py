@@ -3,6 +3,7 @@ from termcolor import colored
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
+from langchain_ollama import ChatOllama
 
 from ..prompts.prompts import *
 from ..states.states import *
@@ -18,6 +19,8 @@ print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white"))
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
 model_large = ChatOpenAI(model="gpt-4o")
 model = ChatOpenAI(model="gpt-4o-mini")
+#model_large = ChatOllama(model="llama3.2:3b")
+#model = ChatOllama(model="llama3.2:3b")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def generate_factors(IdeaState: IdeaState) -> IdeaState:
