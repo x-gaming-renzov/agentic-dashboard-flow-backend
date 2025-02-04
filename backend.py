@@ -9,7 +9,7 @@ from src.agents.chat_agent.agent import  *
 from src.agents.offer_agent.agent import register_new_chat,get_offers
 from src.agents.data_agent.agent import get_metrics_dicts
 from experiment import get_offer_cohorts
-from db import get_metric_ids_for_idea, insert_ideas_into_insight, insert_experiment, add_experiment_to_user
+from db import get_metric_ids_for_idea, insert_ideas_into_insight, insert_experiment, add_experiment_to_user, get_offer
 from util import extract_columns_and_values
 from pandas import DataFrame
 
@@ -154,11 +154,16 @@ def generate_direct_chat(message:str):
 def create_experiment_handler(chat_id, segment_ids, user_id):
     try:
         # Run the asynchronous tasks to get the offers and cohorts concurrently.
-        # Note: get_offer_cohorts returns a tuple: (offer_ids, cohort_A, cohort_B)
+        # get_offer_cohorts returns a tuple: (offer_ids, cohort_A, cohort_B)
         offer_ids, cohort_A, cohort_B = asyncio.run(get_offer_cohorts(chat_id, segment_ids))
         logging.info(f"Offers received: {offer_ids}")
         logging.info(f"Cohort A: {cohort_A}")
         logging.info(f"Cohort B: {cohort_B}")
+
+        # Retrieve offer details from the database for the given offer IDs.
+        # get_offer returns a mapping of offer id to a dictionary of details.
+        offer_details = get_offer(offer_ids)
+        logging.info(f"Offer details: {offer_details}")
 
         experiment_ids = []  # to collect experiment IDs
 
@@ -173,22 +178,27 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
             else:
                 variant_players = []
 
+            # Get offer details; fall back to defaults if not found.
+            details = offer_details.get(offer, {})
+            label = details.get("offer_name", "unnamed")
+            exp_description = details.get("offer_description", "sample_description")
+
             # Build the experiment JSON document for this offer
             experiment = {
-                "_id": str(uuid.uuid4()),                   # Unique experiment ID
-                "label": "unnamed",                           # Default label
-                "exp_description": "sample_description",      # Default description
-                "status": "pending",                          # Always pending at creation
+                "_id": str(uuid.uuid4()),   # Unique experiment ID
+                "label": label,               # Use the offer_name from offer details
+                "exp_description": exp_description,  # Use the offer_description
+                "status": "pending",          # Always pending at creation
                 "segments": segment_ids,
                 "groups": {
                     "control": {
-                        "players": [],                        # Control group players: empty array
-                        "offer_id": "default",                # Fixed default offer id
+                        "players": [],            # Control group players: empty array
+                        "offer_id": "default",    # Fixed default offer id
                     },
                     "variant": {
                         # Map each player in the corresponding cohort to an initial value of 0
                         "players": [{player: 0} for player in variant_players],
-                        "offer_id": offer,                    # Offer for this experiment
+                        "offer_id": offer,        # Offer for this experiment (offer id)
                     }
                 },
                 "result": {

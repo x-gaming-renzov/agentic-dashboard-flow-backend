@@ -89,3 +89,33 @@ def add_experiment_to_user(user_id, experiment_id):
         )
     except Exception as e:
         logger.error(f"Error adding experiment id to user {user_id}: {e}")
+
+def get_offer(offer_ids):
+    """
+    Retrieves offer details for a list of offer IDs from the 'offers' collection.
+    Returns a dictionary mapping each offer ID to its details, for example:
+    {
+        "offer_id1": {
+            "offer_name": "Casual Player Boost Bundle",
+            "offer_description": "Description for casual player boost..."
+        },
+        "offer_id2": {
+            "offer_name": "Warrior's Competitive Edge Bundle",
+            "offer_description": "Description for warrior's edge..."
+        }
+    }
+    """
+    try:
+        logger.info(f"Fetching details for offers: {offer_ids}")
+        offers_collection = db["offers"]
+        cursor = offers_collection.find({"_id": {"$in": offer_ids}})
+        offers = {}
+        for doc in cursor:
+            offers[doc["_id"]] = {
+                "offer_name": doc.get("offer_name", "unnamed"),
+                "offer_description": doc.get("offer_description", "sample_description")
+            }
+        return offers
+    except Exception as e:
+        logger.error(f"Error fetching offers: {e}")
+        return {}
