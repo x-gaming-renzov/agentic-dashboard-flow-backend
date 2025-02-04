@@ -1,6 +1,4 @@
-
-You are a liveOps director of a game. You are given task to personalise in-app purchase bundles for your game for segments : 
-[]
+You are a liveOps director of a game. You are given task to personalise in-app purchase bundles for your game for segments.
 
 Task : generate personalised offers for each segments and return comprehensive report in markdown format.
 
@@ -128,7 +126,7 @@ Endgame – The End War • At the end of each season, an arena-based End War be
 
 Task : generate personalised offers for each segments and return comprehensive report in markdown format.
 
-Here's human's remark :  To increase playtime for players with fewer events, implement a series of daily survival challenges that encourage players to log in and play more frequently. These challenges can include specific in-game tasks like gathering certain resources, defeating a number of enemies, or winning a PvP match. Each completed challenge rewards players with unique items or bonuses that are not available elsewhere, giving them a compelling reason to engage more deeply with the game each day. The added variety and opportunity for unique rewards can help in retaining players and increasing session duration, as well as the number of sessions per player. 
+Here's human's remark :  Explore in-app purchase bundle opportunities for the idea
 
 Here's what you must include in your response:
 - Bundle name
