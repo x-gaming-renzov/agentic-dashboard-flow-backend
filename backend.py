@@ -2,11 +2,14 @@ import logging
 from dotenv import load_dotenv
 import traceback
 import pandas
+import asyncio
+import uuid
 
 from src.agents.chat_agent.agent import  *
 from src.agents.offer_agent.agent import register_new_chat,get_offers
 from src.agents.data_agent.agent import get_metrics_dicts
-from db import get_metric_ids_for_idea, insert_ideas_into_insight
+from experiment import get_offer_cohorts
+from db import get_metric_ids_for_idea, insert_ideas_into_insight, insert_experiment, add_experiment_to_user
 from util import extract_columns_and_values
 from pandas import DataFrame
 
@@ -101,6 +104,12 @@ def ask_metric_agent(instructions : str, displayed_metrics : list[str], chat_id:
         }
 
 def generate_new_chat(idea_id:str):
+    CACHED = {"1":"141","2":"142","3":"143"}
+
+    if idea_id in CACHED:
+        chat_id = CACHED[idea_id]
+        return {"chat_id": chat_id}
+    
     segments = ['1', '2']
     metrics = get_metric_ids_for_idea(idea_id)
     logging.info(f"metrics : {metrics}")
@@ -142,6 +151,66 @@ def generate_direct_chat(message:str):
 
     return {"chat_id" : chat_id}
 
+def create_experiment_handler(chat_id, segment_ids,user_id):
+    try:
+        # Run the asynchronous tasks to get the offers and cohorts
+        offer_ids, cohort_A, cohort_B = asyncio.run(get_offer_cohorts(chat_id, segment_ids))
+        logging.info(f"Offers received: {offer_ids}")
+        logging.info(f"Cohort A: {cohort_A}")
+        logging.info(f"Cohort B: {cohort_B}")
+
+        # Build the experiment JSON document
+        experiment = {
+            "_id": str(uuid.uuid4()),                   # Unique experiment ID
+            "label": "unnamed",                           # Default label
+            "exp_description": "sample_description",      # Default description
+            "status": "pending",                          # Status always pending at creation
+            "segments" : segment_ids,
+            "groups": {
+                "A": {
+                    # Map each player in cohort A to an initial value of 0
+                    "players": [{player: 0} for player in cohort_A],
+                    # Use the first offer id if available
+                    "offer_id": offer_ids[0] if offer_ids and len(offer_ids) > 0 else None,
+                },
+                "B": {
+                    "players": [{player: 0} for player in cohort_B],
+                    # Use the second offer id if available
+                    "offer_id": offer_ids[1] if offer_ids and len(offer_ids) > 1 else None,
+                }
+            },
+            "result": {
+                # Default result values for each group
+                "A": [
+                    {
+                        "name": "bought",
+                        "value": 0,
+                        "unit": "players"
+                    }
+                ],
+                "B": [
+                    {
+                        "name": "bought",
+                        "value": 0,
+                        "unit": "players"
+                    }
+                ]
+            },
+        }
+
+        # Insert the experiment document using the new DB function
+        experiment_ids = insert_experiment(experiment)
+        if experiment_ids:
+            experiment_id = experiment_ids[0]
+            # Update the user's document with the new experiment id
+            add_experiment_to_user(user_id, experiment_id)
+            return {"experiment_ids": experiment_ids}
+        else:
+            return {"error": "Failed to insert experiment."}
+    
+    except Exception as e:
+        logging.error(f"Error in create_experiment_handler: {e}")
+        return {"error": "An error occurred while creating the experiment."}
 
 if __name__ == "__main__":
     # out = chat_agent(chat_id="2", human_message="What was dau yesterday?")
@@ -150,5 +219,6 @@ if __name__ == "__main__":
     # out = ask_metric_agent(instructions="total player joins yesterday", displayed_metrics=[], chat_id="1")
     # out = ask_metric_agent(instructions="pie chart of events for last day", displayed_metrics=[], chat_id="1")
     # out = generate_new_chat(idea_id="2")
-    out = generate_direct_chat("We should target increasing playtime of players who have less events")
+    # out = generate_direct_chat("We should target increasing playtime of players who have less events")
+    out = create_experiment_handler(chat_id="3", segment_ids=['1', '2'], user_id="dhiru")
     print(out)

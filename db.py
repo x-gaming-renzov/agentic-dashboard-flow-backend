@@ -59,3 +59,33 @@ def insert_ideas_into_insight(idea_ids,insight_id):
         )
     except Exception as e:
         logger.error(f"Error inserting ideas into insight {insight_id}: {e}")
+
+def insert_experiment(experiment):
+    """
+    Inserts the experiment document into the 'experiments' collection.
+    Returns a list of inserted experiment IDs.
+    """
+    try:
+        logger.info("Inserting experiment into MongoDB")
+        experiments_collection = db["experiments"]
+        result = experiments_collection.insert_one(experiment)
+        logger.info(f"Experiment inserted with id: {result.inserted_id}")
+        return [str(result.inserted_id)]
+    except Exception as e:
+        logger.error(f"Error inserting experiment: {e}")
+        return []
+
+def add_experiment_to_user(user_id, experiment_id):
+    """
+    Adds the experiment_id to the user's experiments array.
+    If the experiments field does not exist, MongoDB will create it.
+    """
+    try:
+        logger.info(f"Adding experiment {experiment_id} to user {user_id}")
+        users_collection = db["users"]
+        users_collection.update_one(
+            {"_id": user_id},
+            {"$push": {"experiments": experiment_id}}
+        )
+    except Exception as e:
+        logger.error(f"Error adding experiment id to user {user_id}: {e}")
