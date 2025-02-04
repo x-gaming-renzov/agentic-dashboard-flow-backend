@@ -17,7 +17,7 @@ initialize_app()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=540)
 @cors_enabled()
 def chat_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -43,7 +43,7 @@ def chat_endpoint(req: https_fn.Request) -> https_fn.Response:
         traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=540)
 @cors_enabled()
 def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -65,7 +65,7 @@ def data_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=540)
 @cors_enabled()
 def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -88,7 +88,7 @@ def idea_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
         traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
 
-@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=300)
+@https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=540)
 @cors_enabled()
 def metric_agent_endpoint(req: https_fn.Request) -> https_fn.Response:
     """
@@ -169,7 +169,7 @@ def generate_direct(req: https_fn.Request) -> https_fn.Response:
         traceback.print_exc()
         return {'error': 'An error occurred while processing your request.'}, 500
     
-@https_fn.on_request(memory=options.MemoryOption.GB_1, timeout_sec=300)
+@https_fn.on_request(memory=options.MemoryOption.GB_2, timeout_sec=540)
 @cors_enabled()
 def create_experiment(req: https_fn.Request) -> https_fn.Response:
     """

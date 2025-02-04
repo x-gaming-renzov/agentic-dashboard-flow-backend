@@ -30,3 +30,6 @@ src/agents/idea_agent/nodes/__pycache__/nodes.cpython-312.pyc
 src/agents/idea_agent/prompts/__pycache__/prompts.cpython-312.pyc
 src/agents/idea_agent/states/__pycache__/states.cpython-312.pyc
 src/agents/idea_agent/utils/__pycache__/databases.cpython-312.pyc
+experiment.ipynb
+firebase-debug.log
+*.pyc
