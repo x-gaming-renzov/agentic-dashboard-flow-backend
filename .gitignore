@@ -8,6 +8,7 @@ reddit_data.zip
 notebooks
 venv
 Minecraft
+__pycache__
 # sample_data
 app.log
 __pycache__/backend.cpython-312.pyc

@@ -1,0 +1,14 @@
+,,,,,
+Category,Name,Description,Levels (Vanilla),Levels (Custom),Types
+Potion,Potion of Healing,Instantly restores health,"I, II",I - V,"Regular, Splash, Lingering"
+Potion,Potion of Strength,Increases melee damage,"I, II",I - V,"Regular, Splash, Lingering"
+Potion,Potion of Swiftness,Increases speed,"I, II",I - V,"Regular, Splash, Lingering"
+Potion,Potion of Fire Resistance,Grants immunity to fire and lava,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Regeneration,Restores health over time,"I, II",I - V,"Regular, Splash, Lingering"
+Potion,Potion of Night Vision,Grants better visibility in darkness,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Water Breathing,Allows breathing underwater,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Invisibility,Makes the player invisible,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Slow Falling,Reduces fall speed,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Poison,Deals damage over time,"I, II",I - V,"Regular, Splash, Lingering"
+Potion,Potion of Weakness,Reduces attack damage,I,I - III,"Regular, Splash, Lingering"
+Potion,Potion of Slowness,Decreases movement speed,"I, II",I - V,"Regular, Splash, Lingering"

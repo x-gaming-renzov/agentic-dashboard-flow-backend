@@ -1,0 +1,17 @@
+Category,Name,Description
+Enchantment,Sharpness,Increases melee damage
+Enchantment,Smite,Increases damage to undead mobs
+Enchantment,Bane of Arthropods,Increases damage to arthropods
+Enchantment,Knockback,Increases knockback effect
+Enchantment,Fire Aspect,Sets target on fire
+Enchantment,Looting,Increases item drops from mobs
+Enchantment,Efficiency,Increases mining speed
+Enchantment,Silk Touch,Allows collection of blocks in original form
+Enchantment,Fortune,Increases item drop rate from blocks
+Enchantment,Power,Increases arrow damage
+Enchantment,Punch,Increases knockback effect for arrows
+Enchantment,Flame,Sets arrows on fire
+Enchantment,Infinity,Prevents arrow consumption
+Enchantment,Multishot,Shoots multiple arrows from a crossbow
+Enchantment,Piercing,Allows arrows to pass through multiple targets
+Enchantment,Quick Charge,Decreases crossbow reload time

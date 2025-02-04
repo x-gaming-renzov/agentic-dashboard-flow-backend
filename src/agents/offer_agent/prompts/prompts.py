@@ -67,3 +67,34 @@ Do not include suggestions that require:
 - Game balance adjustments
 """, input_variables=["segment_names", "idea", "segments", "GDD", "human_remark"]
 )
+
+generate_offer_strategy_prompt = PromptTemplate(
+    template="""
+You are in-app purchase strategist of a game. You are given task to personalise in-app purchase bundles for your game for segments :
+{segment_names}
+
+Here's Details of segments :
+{segments}
+
+Here's human's remark : {human_remark}
+
+You have to explore following idea :
+{idea}
+
+But to do that, you need to generate a strategy for in-app purchase bundles for each segment.
+
+A good strategy should include:
+- Theory behind the offer
+- Justification for the offer
+- content of the offer
+
+Since you are a strategist, you do not know the exact content of the offer. You need to create list of possible types of items that will appeal to the segment.
+
+Content of the offer should include:
+- What type of items should be included in the offer
+- What are perks that can be included in the offer
+
+Here's learning from data :
+{learning_from_data}
+""", input_variables=["segment_names", "idea", "segments", "human_remark", "learning_from_data"]
+)

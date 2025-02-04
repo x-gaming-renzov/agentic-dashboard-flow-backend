@@ -93,7 +93,11 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         values_name = metric_dict['chartOptions']['yAxis']
         percentages = []
 
-        data = pd.DataFrame(data, columns=[categories_name, values_name])
+        try:
+            data = pd.DataFrame(data, columns=[categories_name, values_name])
+        except Exception as e:
+            data = pd.DataFrame(data, columns=[values_name])
+            data[categories_name] = data.index
 
         sum_values = data[values_name].sum()
 

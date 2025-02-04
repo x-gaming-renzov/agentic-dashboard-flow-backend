@@ -16,8 +16,13 @@ dotenv.load_dotenv()
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
-model = ChatOpenAI(model="gpt-4o-mini")
+#model = ChatOpenAI(model="o1")
+model = ChatOpenAI(model="deepseek/deepseek-chat", api_key="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", base_url="https://openrouter.ai/api/v1")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
+
+# NODE : 1 -> generate bundle theme/idea
+# NODE : 2 -> fetch relevant items | kb/knowledge agent
+# NODE : 3 -> generate offers
 
 def generate_offers_node(OfferState : OfferState) -> OfferState:
     metric_plot = generate_metric_plot(OfferState.metric_ids)

@@ -1,0 +1,12 @@
+,Tool Enchantments,,
+,,,
+Name,Description,Applies To,Conflicts With
+Blast Mining,Chance to create an explosion that mines all blocks in its area.,Pickaxes,"Tunnel, Veinminer"
+Divine Touch,Chance to mine a Spawner with its Entity Type.,Pickaxes,-
+Smelter,Chance to smelt dropped items into other materials.,Tools,"Silk Touch, Divine Touch"
+Haste,Chance to receive Haste effect on block break.,Tools,-
+Lucky Miner,Chance to receive more exp from mined blocks.,Pickaxes,-
+Silk Chest,Chance to save all chest's content in the dropped item on break.,Axes,-
+Telekinesis,Chance to move all block loot directly to your inventory.,Tools,-
+Tunnel,"Chance to mine a larger area (1x2, 2x2, 3x3 depending on level).","Pickaxes, Shovels","Veinminer, Blast Mining"
+Veinminer,Chance to mine the whole ore vein at once.,Pickaxes,"Tunnel, Blast Mining"

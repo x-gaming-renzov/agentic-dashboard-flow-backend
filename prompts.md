@@ -1,86 +1,151 @@
-# Personalised In-App Purchase Bundles Report
+You are a liveOps director of a game. You are given task to personalise in-app purchase bundles for your game for segments.
 
-## Summary
+Task : generate personalised offers for each segments and return comprehensive report in markdown format.
 
-This report outlines personalised in-app purchase (IAP) bundles tailored for two player segments—Casual PvP Players and Competitive PvP Players. The bundles leverage existing in-game items and currencies to enhance player engagement and incentivize purchases without requiring significant game design changes or new asset creation.
+Here's human's remark :  Explore in-app purchase bundle opportunities for the idea
 
----
+Here's what you must include in your response:
+- Bundle name
+- Bundle price
+- Bundle items
+- Bundle description
+- segments
+- Bundle recommendation
+- Product Experiment Instructions
 
-## Segment 1: Casual PvP Players
+RULES : 
+- When creating bundle recommendations, follow these rules:
+- Be accurate with facts and make use of metrics visualisations provided
+- Only suggest bundles using existing in-game items and currencies
+- You can be as detailed as you want
 
-### Bundle Name
+Do not include suggestions that require:
+- Game design changes
+- Level modifications
+- Developer implementation
+- New asset creation
+- Game balance adjustments
 
-**Casual Challenge Bundle**
+You have to explore following idea : 
+{idea}
 
-### Bundle Price
 
-**$4.99**
+Here's details of segments : 
+{segment}
 
-### Bundle Items
+Here's game's gdd : 
+Game Concept Introduction: True Survival Series is a hardcore, skill-based survival game designed to test players’ resilience in an evolving, procedurally generated world. Players must master various skills, gather resources, and defend against escalating threats while building their stronghold and competing in survival events. Logline (for the Main Character in True Survival Series): An unyielding survivor must harness their skills, adapt to a harsh and ever-evolving world, and outlast relentless enemies to claim dominance in the ultimate test of survival and strength.
 
-- 500 in-game currency
-- 3x Health Potions
-- 1x Random Gear Upgrade Token
-- 5x Basic Resource Packs
+Spine (for the Main Character in True Survival Series): Starting with basic survival instincts, the player-character evolves by mastering skills like farming, foraging, and combat. As threats escalate, they must strategically upgrade their attributes and claim land, gradually transforming into a formidable force capable of surviving the toughest environments and conquering the climactic End War.
 
-### Bundle Description
+Background: The game draws inspiration from traditional survival mechanics but introduces RPG-style progression, dynamic mob scaling, and seasonal End War events, creating a fresh take on the survival genre.
 
-Designed for players looking to enhance their casual gaming experience, this bundle provides essential resources to help you engage more effectively in PvP battles. With Health Potions for recovery and a chance for gear improvement, this bundle increases your survivability and enjoyment during short gaming sessions.
+Description: Players begin with minimal resources and must level up skills such as farming, foraging, combat, and crafting. The world evolves alongside player progression, introducing new threats, biomes, and challenges. The ultimate goal is to survive long enough to dominate in the End War event.
 
-### Segments
+Key Features: Dynamic Skill Progression: • 11 skills influence player stats and abilities. Leveling up improves attributes such as strength, toughness, and regeneration.
 
-- Casual PvP Players
+Adaptive Mobs: • Enemies scale with player levels, ensuring persistent challenges. Higher player levels spawn tougher mobs, preventing early-game farming in late-game areas.
 
-### Bundle Recommendation
+Land Claiming System: • Players can claim land to build bases, preventing mob spawns and enemy raids in secured zones.
 
-Encourage purchases by highlighting the ease of upgrading gear and restoring health quickly, catering to their shorter session durations. This bundle’s combination of resources fosters a more engaging gaming experience without overwhelming them.
+Procedural World Events: • Special events (e.g., Nether Opens, Arena Battles) drive gameplay variety and keep the experience fresh.
 
-### Product Experiment Instructions
+PvP and PvE Arenas: • Combat-focused zones allow for PvP battles and boss encounters. Victory yields rare resources and prestige rewards.
 
-1. Launch the bundle as a featured offer for a period of two weeks.
-2. Track conversion rates and player engagement in PvP activities.
-3. Gather player feedback through in-game surveys for further refinement.
+Economy and Crafting: • Players trade resources for in-game currency, upgrading gear and fortifying defenses.
 
----
+Seasonal End War: • A climactic battle that ends each season, allowing the strongest players to rise to dominance.
 
-## Segment 2: Competitive PvP Players
+Genre: Survival RPG with PvP and PvE elements.
 
-### Bundle Name
+Platform: • Primary: PC (Windows/Linux/Mac)
 
-**Elite Combat Bundle**
+• Secondary: Potential expansion to consoles depending on community demand.
 
-### Bundle Price
+Game Mechanics Core Gameplay: True Survival Series combines survival, crafting, and skill progression in a dynamically scaling world. Players gather resources, build bases, and level up skills to unlock new abilities and attributes. Key Gameplay Loops:
 
-**$9.99**
+• Gather > Craft > Build > Survive > Explore > Battle > End War
 
-### Bundle Items
+Game Flow: • Players start with basic skills and limited resources.
 
-- 1000 in-game currency
-- 5x Advanced Health Potions
-- 2x Tactical Gear Upgrade Tokens
-- 10x Premium Resource Packs
-- Exclusive Badge of Honor (in-game visual reward)
+• Over time, players level up by performing tasks like farming, fighting, and mining.
 
-### Bundle Description
+• Dynamic events (such as Nether opening) push players to explore dangerous areas.
 
-Tailored for the serious competitor, this bundle equips you with advanced potions and upgrade tokens essential for dominating in high-stakes PvP environments. Experience enhanced survivability and the opportunity to significantly improve your gear. Stand out in the arena with the Exclusive Badge of Honor!
+• The season concludes with an End War event that determines the champion of that cycle.
 
-### Segments
+Characters Player Character: • The player starts as a customizable avatar with no set backstory. Their attributes and role evolve based on skill progression and gameplay choices. AI Enemies (Mobs): • Basic Mobs (Level 1-10): Low-tier enemies that pose minor threats early on.
 
-- Competitive PvP Players
+• Elite Mobs (Level 11-30): Stronger enemies that can breach unclaimed land.
 
-### Bundle Recommendation
+• Boss Mobs (Event-Only): Massive creatures that require teamwork or advanced gear to defeat.
 
-This bundle meets the demands of competitive players who exhibit higher engagement rates. By offering exclusive cosmetic rewards and resources that support extensive gameplay, this bundle is likely to deepen their investment in the game.
+Game Progression and Skills Skill List: Farming – Boosts health and strength.
 
-### Product Experiment Instructions
+Foraging – Increases toughness and strength.
 
-1. Release the bundle as a limited-time offer in conjunction with a PvP event.
-2. Monitor sales performance and engagement in PvP matches.
-3. Analyze player retention rates post-purchase to assess the bundle's effectiveness.
+Mining – Improves toughness and luck.
 
----
+Fishing – Raises health and luck.
 
-## Conclusion
+Excavation – Enhances regeneration and strength.
 
-The outlined bundles for Casual and Competitive PvP Players are constructed to cater to distinct player needs and preferences, enhancing their overall gaming experience. By closely monitoring player reactions and engagement metrics, we can refine future bundles to maximize satisfaction and revenue.
+Archery – Increases critical damage and strength.
+
+Defense – Improves toughness and health.
+
+Fighting – Enhances regeneration and crit chance.
+
+Agility – Boosts speed and evasion.
+
+Enchanting – Grants wisdom and magical resistance.
+
+Alchemy – Improves potion efficiency and overall health.
+
+Combat System • Blunt Weapons: Fast but lower damage. • Sharp Weapons: Slower but deal higher damage.
+
+• Firearms: Rare, powerful, limited by ammunition scarcity.
+
+• Ranged (Bow/Crossbow): Precision-based weapons with limited ammo.
+
+Land Claiming and Building • Claim Blocks: Players can purchase or craft claim blocks to secure land. • Fortifications: Defensive structures reduce mob incursions and protect valuable resources.
+
+• Shared Claims: Players can invite others to share land for cooperative building.
+
+User Interface (UI) • Main HUD: Displays health, skill progression, and nearby threats. • Skill Menu: Allows players to view and allocate skill points.
+
+• Event Tracker: Provides real-time information on upcoming world events and arena battles.
+
+Economy and Trade • Resource Exchange: Players can trade harvested resources for currency. • Black Market: Rare items and illegal trades occur periodically in secret areas.
+
+• Auction House: Players can list items for sale to others on the server.
+
+Endgame – The End War • At the end of each season, an arena-based End War begins. • Players use their fully upgraded characters to battle for dominance.
+
+• Winning grants unique gear, exclusive land plots, and server-wide recognition.
+
+Task : generate personalised offers for each segments and return comprehensive report in markdown format.
+
+Here's human's remark :  Explore in-app purchase bundle opportunities for the idea
+
+Here's what you must include in your response:
+- Bundle name
+- Bundle price
+- Bundle items
+- Bundle description
+- segments
+- Bundle recommendation
+- Product Experiment Instructions
+
+RULES : 
+- When creating bundle recommendations, follow these rules:
+- Be accurate with facts and make use of metrics visualisations provided
+- Only suggest bundles using existing in-game items and currencies
+- You can be as detailed as you want
+
+Do not include suggestions that require:
+- Game design changes
+- Level modifications
+- Developer implementation
+- New asset creation
+- Game balance adjustments
