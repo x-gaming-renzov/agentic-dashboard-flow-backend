@@ -101,6 +101,12 @@ def ask_metric_agent(instructions : str, displayed_metrics : list[str], chat_id:
         }
 
 def generate_new_chat(idea_id:str):
+    CACHED = {"1":"141","2":"142","3":"143"}
+
+    if idea_id in CACHED:
+        chat_id = CACHED[idea_id]
+        return {"chat_id": chat_id}
+    
     segments = ['1', '2']
     metrics = get_metric_ids_for_idea(idea_id)
     logging.info(f"metrics : {metrics}")
