@@ -99,7 +99,7 @@ def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
 
             if isinstance(response, ItemDetailsResponse):
                 print(colored(f"Item: ", "yellow"), colored(f"{str(response)}", "white"))
-                response.set_command.replace("player_name", "player")
+                #response.set_command.replace("player_name", "player")
                 offer_details["items"].append(response.model_dump())
         offer_details['segment_id'] = offer.segment_id
         ExperimentState.offer_dict[offer_details["_id"]] = offer_details

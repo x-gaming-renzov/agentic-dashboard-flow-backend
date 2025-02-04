@@ -31,8 +31,11 @@ But to give that, you need to create a correct item detials format which has all
 - You need to provide item details as per context of minecraft server.
 - You need to provide item details in structured format.
 - You need to provide minecraft command to provide that item to user.
-- Keep player name as {{player_name}} in command str.
-- in case item is in-game currency, _set_command will be /give cash {{player_name}} {{amount}}
+- Keep player name as {{player}} in command str.
+- in case item is in-game currency, _set_command will be /give cash {{player}} {{amount}}
+- ONLY ADD COMMAND THAT CAN BE SUCCESSFULLY RUN USING SPIGOT PLUGIN. 
+- USE MINECRAFT COMMAND TO PROVIDE CUSTOMISE ITEM TO USER.
+- MAKE SURE TO ADD NAME AND LORE TO ITEM.
 
 # Here's the item to be provided : {item}
 # Here's the context of offer this item is part of : {offer_context}
