@@ -151,66 +151,77 @@ def generate_direct_chat(message:str):
 
     return {"chat_id" : chat_id}
 
-def create_experiment_handler(chat_id, segment_ids,user_id):
+def create_experiment_handler(chat_id, segment_ids, user_id):
     try:
-        # Run the asynchronous tasks to get the offers and cohorts
+        # Run the asynchronous tasks to get the offers and cohorts concurrently.
+        # Note: get_offer_cohorts returns a tuple: (offer_ids, cohort_A, cohort_B)
         offer_ids, cohort_A, cohort_B = asyncio.run(get_offer_cohorts(chat_id, segment_ids))
         logging.info(f"Offers received: {offer_ids}")
         logging.info(f"Cohort A: {cohort_A}")
         logging.info(f"Cohort B: {cohort_B}")
 
-        # Build the experiment JSON document
-        experiment = {
-            "_id": str(uuid.uuid4()),                   # Unique experiment ID
-            "label": "unnamed",                           # Default label
-            "exp_description": "sample_description",      # Default description
-            "status": "pending",                          # Status always pending at creation
-            "segments" : segment_ids,
-            "groups": {
-                "A": {
-                    # Map each player in cohort A to an initial value of 0
-                    "players": [{player: 0} for player in cohort_A],
-                    # Use the first offer id if available
-                    "offer_id": offer_ids[0] if offer_ids and len(offer_ids) > 0 else None,
-                },
-                "B": {
-                    "players": [{player: 0} for player in cohort_B],
-                    # Use the second offer id if available
-                    "offer_id": offer_ids[1] if offer_ids and len(offer_ids) > 1 else None,
-                }
-            },
-            "result": {
-                # Default result values for each group
-                "A": [
-                    {
-                        "name": "bought",
-                        "value": 0,
-                        "unit": "players"
-                    }
-                ],
-                "B": [
-                    {
-                        "name": "bought",
-                        "value": 0,
-                        "unit": "players"
-                    }
-                ]
-            },
-        }
+        experiment_ids = []  # to collect experiment IDs
 
-        # Insert the experiment document using the new DB function
-        experiment_ids = insert_experiment(experiment)
-        if experiment_ids:
-            experiment_id = experiment_ids[0]
-            # Update the user's document with the new experiment id
-            add_experiment_to_user(user_id, experiment_id)
-            return {"experiment_ids": experiment_ids}
-        else:
-            return {"error": "Failed to insert experiment."}
-    
+        # Loop over each offer. Each experiment is generated for one offer.
+        for idx, offer in enumerate(offer_ids):
+            # For two offers, assign cohort_A for the first and cohort_B for the second.
+            # If there are more offers than cohorts, default to an empty list.
+            if idx == 0:
+                variant_players = cohort_A
+            elif idx == 1:
+                variant_players = cohort_B
+            else:
+                variant_players = []
+
+            # Build the experiment JSON document for this offer
+            experiment = {
+                "_id": str(uuid.uuid4()),                   # Unique experiment ID
+                "label": "unnamed",                           # Default label
+                "exp_description": "sample_description",      # Default description
+                "status": "pending",                          # Always pending at creation
+                "segments": segment_ids,
+                "groups": {
+                    "control": {
+                        "players": [],                        # Control group players: empty array
+                        "offer_id": "default",                # Fixed default offer id
+                    },
+                    "variant": {
+                        # Map each player in the corresponding cohort to an initial value of 0
+                        "players": [{player: 0} for player in variant_players],
+                        "offer_id": offer,                    # Offer for this experiment
+                    }
+                },
+                "result": {
+                    # Default result values for each group
+                    "control": [{
+                        "name": "bought",
+                        "value": 0,
+                        "unit": "players"
+                    }],
+                    "variant": [{
+                        "name": "bought",
+                        "value": 0,
+                        "unit": "players"
+                    }]
+                },
+            }
+
+            # Insert the experiment document using the DB function
+            inserted_ids = insert_experiment(experiment)
+            if inserted_ids:
+                experiment_id = inserted_ids[0]
+                # Update the user's document with the new experiment id
+                add_experiment_to_user(user_id, experiment_id)
+                experiment_ids.append(experiment_id)
+            else:
+                logging.error("Failed to insert one of the experiments.")
+
+        return {"experiment_ids": experiment_ids}
+
     except Exception as e:
         logging.error(f"Error in create_experiment_handler: {e}")
         return {"error": "An error occurred while creating the experiment."}
+
 
 if __name__ == "__main__":
     # out = chat_agent(chat_id="2", human_message="What was dau yesterday?")
