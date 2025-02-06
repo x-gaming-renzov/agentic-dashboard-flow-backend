@@ -1,0 +1,194 @@
+{
+  "id": "root",
+  "name": "category selection",
+  "kb": "path/to/categories.csv",
+  "top_n": 1,
+  "use_embedding": false,
+  "use_llm": false,
+  "prompt_name": "category_selection_prompt",
+  "tool_name": "category_selection_tool",
+  "children": [
+    {
+      "id": "food",
+      "name": "food",
+      "instruction": "A food item available in minecraft.",
+      "kb": "path/to/food.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "food_selection_prompt",
+      "tool_name": "food_tool"
+    },
+    {
+      "id": "building_blocks",
+      "name": "building blocks",
+      "instruction": "A building block used in minecraft constructions.",
+      "kb": "path/to/building_blocks.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "building_blocks_selection_prompt",
+      "tool_name": "building_blocks_tool"
+    },
+    {
+      "id": "minerals",
+      "name": "minerals",
+      "instruction": "A mineral such as iron, used for crafting.",
+      "kb": "path/to/minerals.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "minerals_selection_prompt",
+      "tool_name": "minerals_tool"
+    },
+    {
+      "id": "swords",
+      "name": "swords",
+      "instruction": "A sword in minecraft which may include enchantments.",
+      "kb": "path/to/swords.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "swords_selection_prompt",
+      "tool_name": "swords_tool",
+      "children": [
+        {
+          "id": "sword_enchantments",
+          "name": "sword enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "sword_enchantments_prompt",
+          "tool_name": "sword_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "bow",
+      "name": "bow",
+      "instruction": "A bow in minecraft with potential enchantments.",
+      "kb": "path/to/bow.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "bow_selection_prompt",
+      "tool_name": "bow_tool",
+      "children": [
+        {
+          "id": "bow_enchantments",
+          "name": "bow enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "bow_enchantments_prompt",
+          "tool_name": "bow_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "potions",
+      "name": "potions",
+      "instruction": "A potion item with a specific effect.",
+      "kb": "path/to/potions.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "potions_selection_prompt",
+      "tool_name": "potions_tool",
+      "children": [
+        {
+          "id": "potion_effect",
+          "name": "potion effect",
+          "kb": "path/to/potion_effects.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "potion_effect_prompt",
+          "tool_name": "potion_effect_tool"
+        }
+      ]
+    },
+    {
+      "id": "custom",
+      "name": "custom",
+      "instruction": "A custom item defined by the user.",
+      "kb": "path/to/custom.csv",
+      "top_n": 1,
+      "use_embedding": false,
+      "use_llm": false,
+      "prompt_name": "custom_selection_prompt",
+      "tool_name": ""
+    },
+    {
+      "id": "armor",
+      "name": "armor",
+      "instruction": "An armor item in minecraft with enchantments.",
+      "kb": "path/to/armor.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "armor_selection_prompt",
+      "tool_name": "armor_tool",
+      "children": [
+        {
+          "id": "armor_enchantments",
+          "name": "armor enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "armor_enchantments_prompt",
+          "tool_name": "armor_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "picks",
+      "name": "picks",
+      "instruction": "A pickaxe for mining resources.",
+      "kb": "path/to/picks.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "picks_selection_prompt",
+      "tool_name": "picks_tool",
+      "children": [
+        {
+          "id": "pick_enchantments",
+          "name": "pick enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "pick_enchantments_prompt",
+          "tool_name": "pick_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "axe",
+      "name": "axe",
+      "instruction": "An axe for chopping wood with possible enchantments.",
+      "kb": "path/to/axe.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "axe_selection_prompt",
+      "tool_name": "axe_tool",
+      "children": [
+        {
+          "id": "axe_enchantments",
+          "name": "axe enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "axe_enchantments_prompt",
+          "tool_name": "axe_enchantments_tool"
+        }
+      ]
+    }
+  ]
+}
