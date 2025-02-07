@@ -11,3 +11,4 @@ Minecraft
 __pycache__
 # sample_data
 *.pyc
+file.txt
