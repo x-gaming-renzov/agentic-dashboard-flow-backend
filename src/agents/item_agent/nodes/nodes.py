@@ -9,13 +9,13 @@ from ..states.states import *
 from ..utils.embed import get_top_k
 from ..utils.flowutils import get_propmt_list, get_option_paths, read_json, list_subroot_instructions
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
+from ..utils.commands import generate_armor_command,generate_bow_command,generate_potions_command,generate_tool_command
 
 dotenv.load_dotenv()
 JSON_PATH = pathlib.Path(__file__).parent.parent / "flow.json"
 #db_uri = postgresql://xgaming:Xgaming123$@34.131.81.20:5432/mixpanel
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
-
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
 model_large = ChatOpenAI(model="o1-preview")
 model = ChatOpenAI(model="gpt-4o-mini")
@@ -38,6 +38,17 @@ def get_multi_item_details_node(offer_description : str = None) -> Items:
     else:
         return None
 
+def generate_command(item_json):
+    if item_json["category"] == "potions":
+        return generate_potions_command(item_json)
+    elif item_json["category"] == "bow":
+        return generate_bow_command(item_json)
+    elif item_json["category"] == "armor":
+        return generate_armor_command(item_json)
+    elif item_json["category"] == "tools":
+        return generate_tool_command(item_json)
+    else:
+        return None
 # -> List[Dict[str,str]]
 def get_multi_item_commands(Items: Items):
     """
@@ -84,17 +95,13 @@ def get_multi_item_commands(Items: Items):
                 # We take the first (and only) top item.
                 selection.append(top_items[0])
         item_dict["top_k"] = selection
-        
+        command = generate_command(item_dict)
+        item_dict["set_command"] = command
+
         # Append the item details and its selection chain to the commands list.
-        commands.append({
-            "item": item_dict,
-        })
+        commands.append(item_dict)
 
     return commands
-
-
-
-
 
 if __name__ == "__main__":
     description = "designed for the competitive player, this bundle provides crucial boosts for PvP battles, enhancing both offense and defense strategies. With upgrades tailored to skills and gear, players are positioned for success in their PvP endeavors."
