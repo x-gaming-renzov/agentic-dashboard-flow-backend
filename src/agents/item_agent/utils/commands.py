@@ -24,7 +24,7 @@ def generate_potions_command(item_json):
         name = name.replace("'", "")
         lore = item_json["description"]
         lore = lore.replace("'", "")
-        effect = item_json["top_k"][0]["name"].lower()
+        effect = item_json["top_k"][1]["name"].lower()
         amount = item_json["amount"]
         effect = effect.replace("potion of ", "")
         
