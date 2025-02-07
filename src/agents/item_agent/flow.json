@@ -1,0 +1,104 @@
+{
+  "id": "root",
+  "name": "category selection",
+  "kb": "path/to/categories.csv",
+  "top_n": 1,
+  "use_embedding": false,
+  "use_llm": false,
+  "prompt_name": "category_selection_prompt",
+  "tool_name": "category_selection_tool",
+  "children": [
+    {
+      "id": "tools",
+      "name": "tools",
+      "instruction": "Tools include swords, bows, pickaxes, axes shovels etc.",
+      "kb": "path/to/swords.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "swords_selection_prompt",
+      "tool_name": "swords_tool",
+      "children": [
+        {
+          "id": "tools_enchantment",
+          "name": "sword enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "sword_enchantments_prompt",
+          "tool_name": "sword_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "bow",
+      "name": "bow",
+      "instruction": "A bow in minecraft with potential enchantments.",
+      "kb": "path/to/bow.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "bow_selection_prompt",
+      "tool_name": "bow_tool",
+      "children": [
+        {
+          "id": "bow_enchantment",
+          "name": "bow enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "bow_enchantments_prompt",
+          "tool_name": "bow_enchantments_tool"
+        }
+      ]
+    },
+    {
+      "id": "potions",
+      "name": "potions",
+      "instruction": "A potion item with a specific effect.",
+      "kb": "path/to/potions.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "potions_selection_prompt",
+      "tool_name": "potions_tool",
+      "children": [
+        {
+          "id": "potion_effect",
+          "name": "potion effect",
+          "kb": "path/to/potion_effects.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "potion_effect_prompt",
+          "tool_name": "potion_effect_tool"
+        }
+      ]
+    },
+    {
+      "id": "armor",
+      "name": "armor",
+      "instruction": "An armor item in minecraft with enchantments.",
+      "kb": "path/to/armor.csv",
+      "top_n": 1,
+      "use_embedding": true,
+      "use_llm": true,
+      "prompt_name": "armor_selection_prompt",
+      "tool_name": "armor_tool",
+      "children": [
+        {
+          "id": "armor_enchantment",
+          "name": "armor enchantments",
+          "kb": "path/to/enchantments.csv",
+          "top_n": 1,
+          "use_embedding": true,
+          "use_llm": true,
+          "prompt_name": "armor_enchantments_prompt",
+          "tool_name": "armor_enchantments_tool"
+        }
+      ]
+    }
+  ]
+}

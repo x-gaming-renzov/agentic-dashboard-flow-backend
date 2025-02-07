@@ -1,9 +1,0 @@
-Command,Description,Arguments
-/eenchants [help],Displays a list of all plugin commands.,[help] (optional)
-/eenchants reload,Reloads the plugin and enchantment configurations.,-
-/eenchants book <enchantment> [level] [player],Gives an enchanted book with a specific enchantment to a player.,"<enchantment> (required), [level] (optional), [player] (optional)"
-/eenchants getfuel <enchantment> [amount],Get enchantment fuel (charges) item.,"<enchantment> (required), [amount] (optional)"
-/eenchants raritybook <rarity> [level] [player],Gives an enchanted book with a specific rarity to a player.,"<rarity> (required), [level] (optional), [player] (optional)"
-/eenchants enchant <enchantment> <level> [player] [slot],Enchants an item in the specified player slot with a specific enchantment.,"<enchantment> (required), <level> (required), [player] (optional), [slot] (optional)"
-/eenchants disenchant <enchantment> [player] [slot],Disenchants item in the specified player slot from a specific enchantment.,"<enchantment> (required), [player] (optional), [slot] (optional)"
-/eenchants list [player],Opens a GUI with new enchantments.,[player] (optional)

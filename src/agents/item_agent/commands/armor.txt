@@ -1,0 +1,1 @@
+minecraft:give {player_name} {item_name}[custom_name='["",{"text":"{name}","italic":false}]',lore=['["",{"text":"{lore}","italic":false}]'],enchantments={levels:{{enchantment}:{level}}}] 1
