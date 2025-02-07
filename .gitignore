@@ -33,3 +33,5 @@ src/agents/idea_agent/utils/__pycache__/databases.cpython-312.pyc
 experiment.ipynb
 firebase-debug.log
 *.pyc
+*.pyc
+file.txt

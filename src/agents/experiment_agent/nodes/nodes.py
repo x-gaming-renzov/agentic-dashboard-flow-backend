@@ -11,6 +11,8 @@ from ..states.states import *
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 from ..utils.databases import *
 
+from ...item_agent.agent import get_items
+
 dotenv.load_dotenv()
 #db_uri = postgresql://xgaming:Xgaming123$@34.131.81.20:5432/mixpanel
 
@@ -78,8 +80,6 @@ def get_item_context(item ,k=5):
 def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
     mongo_db = get_mongo_db()
 
-    generator_model = model.with_structured_output(ItemDetailsResponse)
-    generator = get_item_details_prompt | generator_model
     for offer in ExperimentState.offers:
         offer_details = {
             "offer_name": offer.offer_name,
@@ -88,21 +88,27 @@ def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
             "_id": str(uuid4().hex),
             "duration": 72
         }
-        for item in offer.items:
-            context = get_item_context(item)
+        # for item in offer.items:
+        #     context = get_item_context(item)
             
-            response = generator.invoke({
-                "item": item,
-                "context": context,
-                "offer_context": offer.offer_description
-            })
+        #     response = generator.invoke({
+        #         "item": item,
+        #         "context": context,
+        #         "offer_context": offer.offer_description
+        #     })
 
-            if isinstance(response, ItemDetailsResponse):
-                print(colored(f"Item: ", "yellow"), colored(f"{str(response)}", "white"))
-                #response.set_command.replace("player_name", "player")
-                offer_details["items"].append(response.model_dump())
+        #     if isinstance(response, ItemDetailsResponse):
+        #         print(colored(f"Item: ", "yellow"), colored(f"{str(response)}", "white"))
+        #         #response.set_command.replace("player_name", "player")
+        #         offer_details["items"].append(response.model_dump())
+        # offer_details['segment_id'] = offer.segment_id
+        # ExperimentState.offer_dict[offer_details["_id"]] = offer_details
+        # print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
         offer_details['segment_id'] = offer.segment_id
+        items = get_items(offer.offer_description)
+        offer_details['items'] = items
         ExperimentState.offer_dict[offer_details["_id"]] = offer_details
+        print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
     
     mongo_db.get_collection('offers').insert_many(list(ExperimentState.offer_dict.values()))
 
