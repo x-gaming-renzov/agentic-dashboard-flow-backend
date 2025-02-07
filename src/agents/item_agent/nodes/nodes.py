@@ -39,7 +39,7 @@ def get_multi_item_details_node(offer_description : str = None) -> Items:
         return None
 
 # -> List[Dict[str,str]]
-def get_multi_item_commands_selection(Items: Items):
+def get_multi_item_commands(Items: Items):
     """
     For each item in Items, retrieves the option path (from the flow JSON)
     corresponding to its category. Then for each node in that path, it selects 
