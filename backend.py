@@ -214,6 +214,7 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
                         "unit": "players"
                     }]
                 },
+                "user":user_id
             }
 
             # Insert the experiment document using the DB function
