@@ -7,6 +7,7 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from ..prompts.prompts import *
 from ..states.states import *
 from ..utils.databases import *
+from ..utils.kbutils import format_armor_enchantments
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 
@@ -33,16 +34,23 @@ def generate_offers_node(OfferState : OfferState) -> OfferState:
     segments_names = [segment["name"] for segment in segments]
     ideas = mongo_db['ideas'].find({"_id": {"$in": OfferState.idea}})
     ideas = list(ideas)
-
+    
     with open('kb/gdd.txt', 'r') as file:
         GDD = file.read()
+
+    json_data = {}
+    with open('kb/categorized_data.json', 'r') as f:
+        json_data = json.load(f)
+
+    items = format_armor_enchantments(json_data)
 
     prompt = offer_prompt.invoke({
         "segment_names": segments_names,
         "idea": ideas,
         "segments": segments,
         "GDD": GDD,
-        "human_remark": OfferState.human_remark
+        "human_remark": OfferState.human_remark,
+        "items":items
     })
 
     content = [
