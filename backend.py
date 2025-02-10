@@ -117,7 +117,7 @@ def generate_new_chat(idea_id:str):
     human_remark = 'Explore personalised in-app offers for my segemnts'
     offers = get_offers(metric_ids=metrics, segment_ids=segments, human_remark=human_remark, idea_ids=ideas)
     logging.info(f"offers : {offers}")
-    chat_id = register_new_chat(offers= offers)
+    chat_id = register_new_chat(offers=offers)
     logging.info(f"chat_id : {chat_id}")        
 
     return {"chat_id" : chat_id}
@@ -214,7 +214,7 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
                         "unit": "players"
                     }]
                 },
-                "user":user_id
+                "user_id":user_id
             }
 
             # Insert the experiment document using the DB function
@@ -240,7 +240,7 @@ if __name__ == "__main__":
     # out = ask_idea_agent(chat_id="2", query="We should just shut this down")
     # out = ask_metric_agent(instructions="total player joins yesterday", displayed_metrics=[], chat_id="1")
     # out = ask_metric_agent(instructions="pie chart of events for last day", displayed_metrics=[], chat_id="1")
-    # out = generate_new_chat(idea_id="2")
+    out = generate_new_chat(idea_id="6")
     # out = generate_direct_chat("We should target increasing playtime of players who have less events")
-    out = create_experiment_handler(chat_id="3", segment_ids=['1', '2'], user_id="dhiru")
+    # out = create_experiment_handler(chat_id="3", segment_ids=['1', '2'], user_id="dhiru")
     print(out)
