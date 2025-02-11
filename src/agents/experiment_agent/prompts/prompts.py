@@ -43,3 +43,20 @@ But to give that, you need to create a correct item detials format which has all
 # Here's the context of item : 
 # {context}
 """, input_variables=["item", "context", "offer_context"])
+
+get_bundle_prompt = PromptTemplate(
+    template="""
+You will be given a chat history between human and ai with details about launching an expreiment in a minecraft game by offering bundles to players
+{chat_history}
+
+#TASK
+read the chat history, identify the bundles in the first ai message, and record any chanegs throughout the chat.
+
+#OUTPUT FORMAT
+You will return:
+1. Bundle name
+2. Original items in the bundle from the first ai message
+3. Final bundle items after any changes from the chat. It is possible to have no change at all in the items
+
+""",
+input_variables=["chat_history"])
