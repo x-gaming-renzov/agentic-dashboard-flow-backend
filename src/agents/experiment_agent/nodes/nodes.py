@@ -29,7 +29,7 @@ def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState
     mongo_db = get_mongo_db()
 
     chat = mongo_db.get_collection('chats').find_one({"_id": ExperimentState.chat_id})
-    # print(colored(f"Chat: ", "yellow"), colored(f"{str(chat)}", "white"))
+    # # print(colored(f"Chat: ", "yellow"), colored(f"{str(chat)}", "white"))
     segment_ids = chat['segments_ids']
     segments = mongo_db.get_collection('segments').find({"_id": {"$in": segment_ids}})
     segments = list(segments)
@@ -95,6 +95,21 @@ def getbundlecontext(chat_history) -> Bundles:
         return Bundles(bundles=[])
 
 
+def getbundlecontext(chat_history) -> Bundles:
+    generator_model = model.with_structured_output(Bundles)
+    generator = get_bundle_prompt | generator_model
+
+    response = generator.invoke({
+        "chat_history": chat_history
+    })
+
+    if(isinstance(response, Bundles)):
+        return response
+    else:
+        #log error
+        return Bundles(bundles=[])
+
+
 def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
     mongo_db = get_mongo_db()
     bundles = getbundlecontext(ExperimentState.chat)
@@ -112,7 +127,14 @@ def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
 
         offer_details['segment_id'] = offer.segment_id
         items = get_items(bundles.bundles[i].new_bundle_items)
+
         offer_details['items'] = items
+        bundle_idx = "bundle_" + str(i)
+        offer_details[bundle_idx] = {}
+        offer_details[bundle_idx]['name'] = bundles.bundles[i].bundle_name
+        offer_details[bundle_idx]['old'] = bundles.bundles[i].original_bundle_items
+        offer_details[bundle_idx]['new'] = bundles.bundles[i].new_bundle_items
+
         ExperimentState.offer_dict[offer_details["_id"]] = offer_details
         print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
         i = i+1

@@ -73,6 +73,6 @@ Content of the offer should include:
 - What are perks that can be included in the offer
 
 Here's learning from data :
-{learning_from_data}    
+{learning_from_data}
 """, input_variables=["segment_names", "idea", "segments", "human_remark", "learning_from_data"]
 )
