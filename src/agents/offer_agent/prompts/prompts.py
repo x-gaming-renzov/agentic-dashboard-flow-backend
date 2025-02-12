@@ -18,19 +18,6 @@ Here's what you must include in your response:
 - Bundle recommendation
 - Product Experiment Instructions
 
-RULES : 
-- When creating bundle recommendations, follow these rules:
-- Be accurate with facts and make use of metrics visualisations provided
-- Only suggest bundles using existing in-game items and currencies
-- You can be as detailed as you want
-
-Do not include suggestions that require:
-- Game design changes
-- Level modifications
-- Developer implementation
-- New asset creation
-- Game balance adjustments
-
 You have to explore following idea : 
 {idea}
 
@@ -40,24 +27,14 @@ Here's details of segments :
 Here's game's gdd : 
 {GDD}
 
-Task : generate personalised offers for each segments and return comprehensive report in markdown format.
-
-Here's human's remark : {human_remark} 
-
-Here's what you must include in your response:
-- Bundle name
-- Bundle price
-- Bundle items
-- Bundle description
-- segments
-- Bundle recommendation
-- Product Experiment Instructions
+Here are the items available in the game. These are the only available items, effects and enchantments:
+{items}
 
 RULES : 
-- When creating bundle recommendations, follow these rules:
 - Be accurate with facts and make use of metrics visualisations provided
-- Only suggest bundles using existing in-game items and currencies
+- You will suggest bundles only and ONLY from the provided list of items. No items are allowed outside of the list
 - You can be as detailed as you want
+- Golden apples are NOT allowed
 
 Do not include suggestions that require:
 - Game design changes
@@ -65,7 +42,8 @@ Do not include suggestions that require:
 - Developer implementation
 - New asset creation
 - Game balance adjustments
-""", input_variables=["segment_names", "idea", "segments", "GDD", "human_remark"]
+
+""", input_variables=["segment_names", "idea", "segments", "GDD", "human_remark","items"]
 )
 
 generate_offer_strategy_prompt = PromptTemplate(

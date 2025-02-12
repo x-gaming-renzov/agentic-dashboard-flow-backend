@@ -10,6 +10,7 @@ from ..states.states import *
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 from ..utils.databases import *
+from ..utils.chatutils import *
 
 from ...item_agent.agent import get_items
 
@@ -28,7 +29,7 @@ def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState
     mongo_db = get_mongo_db()
 
     chat = mongo_db.get_collection('chats').find_one({"_id": ExperimentState.chat_id})
-    print(colored(f"Chat: ", "yellow"), colored(f"{str(chat)}", "white"))
+    # # print(colored(f"Chat: ", "yellow"), colored(f"{str(chat)}", "white"))
     segment_ids = chat['segments_ids']
     segments = mongo_db.get_collection('segments').find({"_id": {"$in": segment_ids}})
     segments = list(segments)
@@ -50,6 +51,8 @@ def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState
             ExperimentState.offers.append(response)
             print(colored(f"Offer: ", "yellow"), colored(f"{str(response)}", "white"))
 
+    ExperimentState.chat = extract_chat_history(chat_json=chat)
+    print(colored(f"Chat: ", "yellow"), colored(f"{str(ExperimentState.chat)}", "white"))
     return ExperimentState
 
 def get_item_context(item ,k=5):
@@ -77,9 +80,42 @@ def get_item_context(item ,k=5):
                 context.append(item['detailed_description'])
     return context
 
+def getbundlecontext(chat_history) -> Bundles:
+    generator_model = model.with_structured_output(Bundles)
+    generator = get_bundle_prompt | generator_model
+
+    response = generator.invoke({
+        "chat_history": chat_history
+    })
+
+    if(isinstance(response, Bundles)):
+        return response
+    else:
+        #log error
+        return Bundles(bundles=[])
+
+
+def getbundlecontext(chat_history) -> Bundles:
+    generator_model = model.with_structured_output(Bundles)
+    generator = get_bundle_prompt | generator_model
+
+    response = generator.invoke({
+        "chat_history": chat_history
+    })
+
+    if(isinstance(response, Bundles)):
+        return response
+    else:
+        #log error
+        return Bundles(bundles=[])
+
+
 def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
     mongo_db = get_mongo_db()
+    bundles = getbundlecontext(ExperimentState.chat)
+    print(colored(f"Bundles: ", "yellow"), colored(f"{str(bundles)}", "white"))
 
+    i = 0
     for offer in ExperimentState.offers:
         offer_details = {
             "offer_name": offer.offer_name,
@@ -88,27 +124,20 @@ def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
             "_id": str(uuid4().hex),
             "duration": 72
         }
-        # for item in offer.items:
-        #     context = get_item_context(item)
-            
-        #     response = generator.invoke({
-        #         "item": item,
-        #         "context": context,
-        #         "offer_context": offer.offer_description
-        #     })
 
-        #     if isinstance(response, ItemDetailsResponse):
-        #         print(colored(f"Item: ", "yellow"), colored(f"{str(response)}", "white"))
-        #         #response.set_command.replace("player_name", "player")
-        #         offer_details["items"].append(response.model_dump())
-        # offer_details['segment_id'] = offer.segment_id
-        # ExperimentState.offer_dict[offer_details["_id"]] = offer_details
-        # print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
         offer_details['segment_id'] = offer.segment_id
-        items = get_items(offer.offer_description)
+        items = get_items(bundles.bundles[i].new_bundle_items)
+
         offer_details['items'] = items
+        bundle_idx = "bundle_" + str(i)
+        offer_details[bundle_idx] = {}
+        offer_details[bundle_idx]['name'] = bundles.bundles[i].bundle_name
+        offer_details[bundle_idx]['old'] = bundles.bundles[i].original_bundle_items
+        offer_details[bundle_idx]['new'] = bundles.bundles[i].new_bundle_items
+
         ExperimentState.offer_dict[offer_details["_id"]] = offer_details
         print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
+        i = i+1
     
     mongo_db.get_collection('offers').insert_many(list(ExperimentState.offer_dict.values()))
 

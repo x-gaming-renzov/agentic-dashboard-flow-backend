@@ -4,7 +4,7 @@ get_multi_item_details_prompt = PromptTemplate(
     template="""
 
 #TASK
-Your task is to come up with two to four items in minecraft to be given to a player based on the following offer description
+Your task is to come up with items in minecraft to be given to a player based on the following bundle description
 {offer_description}
 
 Each item must be in one of the following categories and follow the instruction for that category 

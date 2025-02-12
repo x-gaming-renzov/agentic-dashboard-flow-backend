@@ -7,6 +7,7 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from ..prompts.prompts import *
 from ..states.states import *
 from ..utils.databases import *
+from ..utils.kbutils import format_armor_enchantments
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 
@@ -16,8 +17,8 @@ dotenv.load_dotenv()
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
-#model = ChatOpenAI(model="o1")
-model = ChatOpenAI(model="deepseek/deepseek-chat", api_key="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", base_url="https://openrouter.ai/api/v1")
+model = ChatOpenAI(model="o1")
+# model = ChatOpenAI(model="deepseek/deepseek-chat", api_key="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", base_url="https://openrouter.ai/api/v1")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 # NODE : 1 -> generate bundle theme/idea
@@ -33,16 +34,23 @@ def generate_offers_node(OfferState : OfferState) -> OfferState:
     segments_names = [segment["name"] for segment in segments]
     ideas = mongo_db['ideas'].find({"_id": {"$in": OfferState.idea}})
     ideas = list(ideas)
-
+    
     with open('kb/gdd.txt', 'r') as file:
         GDD = file.read()
+
+    json_data = {}
+    with open('kb/categorized_data.json', 'r') as f:
+        json_data = json.load(f)
+
+    items = format_armor_enchantments(json_data)
 
     prompt = offer_prompt.invoke({
         "segment_names": segments_names,
         "idea": ideas,
         "segments": segments,
         "GDD": GDD,
-        "human_remark": OfferState.human_remark
+        "human_remark": OfferState.human_remark,
+        "items":items
     })
 
     content = [
