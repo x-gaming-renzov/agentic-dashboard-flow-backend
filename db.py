@@ -106,7 +106,7 @@ def get_offer(offer_ids):
     }
     """
     try:
-        logger.info(f"Fetching details for offers: {offer_ids}")
+        # logger.info(f"Fetching details for offers: {offer_ids}")
         offers_collection = db["offers"]
         cursor = offers_collection.find({"_id": {"$in": offer_ids}})
         offers = {}

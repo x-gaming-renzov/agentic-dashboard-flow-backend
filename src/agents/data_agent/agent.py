@@ -6,6 +6,7 @@ import numpy as np
 import io
 import base64
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import traceback
 
 from .nodes.nodes import *
 from .utils.databases import get_mongo_db, execute_sql_query
@@ -71,6 +72,7 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         print(f"Error: {e}")
         data, query = get_data_from_db(f"Make sure the query is correct. Error: {e}. If not, correct it and return the data. Metric detail : {metric_dict}")
         mongo_db['charliedemo']['metrics'].update_one({"_id": id}, {"$set": {"query": query}})
+        traceback.print_exc()
     
     if metric_dict['chartType'] == 'line':
         xAxis_name = metric_dict['chartOptions']['xAxis']
@@ -79,6 +81,7 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         try: 
             data[xAxis_name] = pd.to_datetime(data[xAxis_name])
         except:
+            traceback.print_exc()
             pass
         data = data.sort_values(by=xAxis_name)
         data = data.reset_index(drop=True)
@@ -98,6 +101,7 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
         except Exception as e:
             data = pd.DataFrame(data, columns=[values_name])
             data[categories_name] = data.index
+            traceback.print_exc()
 
         sum_values = data[values_name].sum()
 

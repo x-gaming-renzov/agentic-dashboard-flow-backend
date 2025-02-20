@@ -163,7 +163,7 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
         # Retrieve offer details from the database for the given offer IDs.
         # get_offer returns a mapping of offer id to a dictionary of details.
         offer_details = get_offer(offer_ids)
-        logging.info(f"Offer details: {offer_details}")
+        # logging.info(f"Offer details: {offer_details}")
 
         experiment_ids = []  # to collect experiment IDs
 
@@ -231,6 +231,7 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
 
     except Exception as e:
         logging.error(f"Error in create_experiment_handler: {e}")
+        traceback.print_exc()
         return {"error": "An error occurred while creating the experiment."}
 
 
@@ -240,7 +241,7 @@ if __name__ == "__main__":
     # out = ask_idea_agent(chat_id="2", query="We should just shut this down")
     # out = ask_metric_agent(instructions="total player joins yesterday", displayed_metrics=[], chat_id="1")
     # out = ask_metric_agent(instructions="pie chart of events for last day", displayed_metrics=[], chat_id="1")
-    out = generate_new_chat(idea_id="6")
+    # out = generate_new_chat(idea_id="6")
     # out = generate_direct_chat("We should target increasing playtime of players who have less events")
-    # out = create_experiment_handler(chat_id="3", segment_ids=['1', '2'], user_id="dhiru")
+    out = create_experiment_handler(chat_id="184", segment_ids=['1', '2'], user_id="dhiru")
     print(out)

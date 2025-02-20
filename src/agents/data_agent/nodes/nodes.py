@@ -6,6 +6,7 @@ from langchain_openai import ChatOpenAI
 from ..prompts.prompts import *
 from ..states.states import *
 from ..utils.databases import execute_sql_query
+import traceback
 
 from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool
 
@@ -53,8 +54,9 @@ def execute_query(DataQuerryState: DataQuerryState):
         DataQuerryState.data = execute_sql_query(DataQuerryState.query)
         DataQuerryState.should_retry = False
         print(colored(f"Status: ", "green"), colored(f"Query executed", "white"))
-        print(colored(f"Data: ", "white"), colored(f"{DataQuerryState.data}", "yellow"))
+        # print(colored(f"Data: ", "white"), colored(f"{DataQuerryState.data}", "yellow"))
     except Exception as e:
+        traceback.print_exc()
         error_note = f"""
 Developer ran into an error while executing your instructions. Here is the error message:
 {e}
@@ -92,9 +94,9 @@ def qa_test(DataQuerryState: DataQuerryState) -> DataQuerryState:
     if isinstance(response, QaResponse):
         DataQuerryState.qa_status = response.ok
     print(colored(f"Status: ", "green"), colored(f"QA test completed", "white"))
-    print(colored(f"QA Status: ", "white"), colored(f"{DataQuerryState.qa_status}", "yellow"))
+    # print(colored(f"QA Status: ", "white"), colored(f"{DataQuerryState.qa_status}", "yellow"))
 
-    print(colored(f"Remarks: ", "white"), colored(f"{response.remarks}", "yellow"))
+    # print(colored(f"Remarks: ", "white"), colored(f"{response.remarks}", "yellow"))
     remark_note = str(response.remarks)
     DataQuerryState.human_query += remark_note
     return DataQuerryState

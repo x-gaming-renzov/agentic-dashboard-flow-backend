@@ -1,4 +1,6 @@
 import asyncio
+import traceback
+
 from src.agents.experiment_agent.agent import get_experiment_ready_offer
 from src.agents.experiment_agent.utils.cohorts import get_cohorts
 
@@ -16,18 +18,23 @@ async def get_offer_cohorts(chat_id, segment_ids):
         - cohort_A: The result for the first segment's cohort.
         - cohort_B: The result for the second segment's cohort.
     """
-    loop = asyncio.get_running_loop()
-    
-    # Wrap both synchronous functions in run_in_executor:
-    offer_task = loop.run_in_executor(None, get_experiment_ready_offer, chat_id, segment_ids)
-    cohort_task_A = loop.run_in_executor(None, get_cohorts, segment_ids[0])
-    cohort_task_B = loop.run_in_executor(None, get_cohorts, segment_ids[1])
-    
-    # Await all tasks concurrently
-    offer_ids, cohort_A, cohort_B = await asyncio.gather(
-        offer_task,
-        cohort_task_A,
-        cohort_task_B
-    )
-    
-    return offer_ids, cohort_A, cohort_B
+    try:
+      loop = asyncio.get_running_loop()
+      
+      # Wrap both synchronous functions in run_in_executor:
+      offer_task = loop.run_in_executor(None, get_experiment_ready_offer, chat_id, segment_ids)
+      cohort_task_A = loop.run_in_executor(None, get_cohorts, segment_ids[0])
+      cohort_task_B = loop.run_in_executor(None, get_cohorts, segment_ids[1])
+      
+      # Await all tasks concurrently
+      offer_ids, cohort_A, cohort_B = await asyncio.gather(
+          offer_task,
+          cohort_task_A,
+          cohort_task_B
+      )
+      
+      return offer_ids, cohort_A, cohort_B
+    except Exception as e:
+      print(f"An error occurred: {e}")
+      traceback.print_exc()
+      return None, None, None
