@@ -26,7 +26,11 @@ print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white")
 def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState:
     mongo_db = get_mongo_db()
 
-    chat = mongo_db.get_collection('chats').find_one({"_id": ExperimentState.chat_id})
+    chat = mongo_db.get_collection("chats").find_one({"_id": ExperimentState.chat_id})
+    if not chat:
+        print(f"No chat found for id={ExperimentState.chat_id}")
+        raise ValueError(f"No chat found for id={ExperimentState.chat_id}")
+
     # # print(colored(f"Chat: ", "yellow"), colored(f"{str(chat)}", "white"))
     segment_ids = chat['segments_ids']
     segments = mongo_db.get_collection('segments').find({"_id": {"$in": segment_ids}})
@@ -37,7 +41,12 @@ def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState
     generator_model = model.with_structured_output(SegmentOfferItemsResponse)
     generator = get_experiment_offer_prompt | generator_model
 
+    print(f"[get_offer_content_node] Start: ExperimentState.offers length = {len(ExperimentState.offers)}")
     for segment in segments:
+
+        # print(f"chat document from Mongo: {chat["offers"]}")
+        print(f"segments: {len(segments)}")
+
         #print(colored(f"Segment: ", "yellow"), colored(f"{str(segment)}", "white"))
         response = generator.invoke({
             "chat": chat["offers"],
@@ -46,9 +55,16 @@ def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState
         
         if isinstance(response, SegmentOfferItemsResponse):
             response.segment_id = segment['_id']
+            print("adding offer")
             ExperimentState.offers.append(response)
             # print(colored(f"Offer: ", "yellow"), colored(f"{str(response)}", "white"))
+        else:
+            #log error
+            print("error, cant add offer")
+            print(response)
+            pass
 
+    print(f"[get_offer_content_node] End: ExperimentState.offers length = {len(ExperimentState.offers)}")
     ExperimentState.chat = extract_chat_history(chat_json=chat)
     # print(colored(f"Chat: ", "yellow"), colored(f"{str(ExperimentState.chat)}", "white"))
     return ExperimentState
@@ -109,6 +125,7 @@ def getbundlecontext(chat_history) -> Bundles:
 
 
 def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
+    print(f"[get_item_details_node] Start: ExperimentState.offers length = {len(ExperimentState.offers)}")
     mongo_db = get_mongo_db()
     bundles = getbundlecontext(ExperimentState.chat)
     # print(colored(f"Bundles: ", "yellow"), colored(f"{str(bundles)}", "white"))
@@ -136,7 +153,9 @@ def get_item_details_node(ExperimentState : ExperimentState) -> ExperimentState:
         ExperimentState.offer_dict[offer_details["_id"]] = offer_details
         # print(colored(f"Offer: ", "yellow"), colored(f"{str(offer_details)}", "white"))
         i = i+1
+
+    if not ExperimentState.offers:
+        raise ValueError("No offers generated for this chat—cannot continue.")
     
     mongo_db.get_collection('offers').insert_many(list(ExperimentState.offer_dict.values()))
-
     return ExperimentState

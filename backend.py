@@ -157,8 +157,8 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
         # get_offer_cohorts returns a tuple: (offer_ids, cohort_A, cohort_B)
         offer_ids, cohort_A, cohort_B = asyncio.run(get_offer_cohorts(chat_id, segment_ids))
         logging.info(f"Offers received: {offer_ids}")
-        logging.info(f"Cohort A: {cohort_A}")
-        logging.info(f"Cohort B: {cohort_B}")
+        logging.info(f"Cohort A: {len(cohort_A)}")
+        logging.info(f"Cohort B: {len(cohort_B)}")
 
         if not offer_ids:
             logging.error("No offers returned from get_offer_cohorts")
