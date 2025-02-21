@@ -1,5 +1,5 @@
 from ...data_agent.agent import get_data_from_db
-from .databases import get_mongo_db
+from ....utils.mongodb import get_mongo_db
 
 def get_cohorts(segment_id):
     db = get_mongo_db().get_collection("segments")

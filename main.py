@@ -10,12 +10,14 @@ dotenv.load_dotenv()
 from util import logger
 from backend import chat, data_agent, ask_idea_agent, generate_new_chat,ask_metric_agent,generate_direct_chat,create_experiment_handler
 from cors import cors_enabled
+from src.utils.db_pool import init_pg_pool
 
 # Initialize Flask app
 initialize_app()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
+init_pg_pool(minconn=1, maxconn=5)
 
 @https_fn.on_request(memory=options.MemoryOption.GB_1,timeout_sec=540)
 @cors_enabled()

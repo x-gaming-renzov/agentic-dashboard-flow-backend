@@ -6,7 +6,8 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 from ..prompts.prompts import *
 from ..states.states import *
-from ..utils.databases import *
+from ....utils.mongodb import get_mongo_db
+
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 
@@ -63,6 +64,3 @@ def chat_node(ChatState: ChatState) -> ChatState:
             ChatState.agent_instructions = response.agent_instructions
 
     return ChatState
-    
-
-

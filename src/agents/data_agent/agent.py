@@ -9,7 +9,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import traceback
 
 from .nodes.nodes import *
-from .utils.databases import get_mongo_db, execute_sql_query
+
+from ...utils.db_pool import execute_sql_query
+from ...utils.mongodb import get_mongo_db
 dotenv.load_dotenv()
 
 import matplotlib
@@ -42,9 +44,9 @@ def get_graph():
 
 def get_data_from_db(query : str):
     graph = get_graph()
-    with open('src/agents/data_agent/kb/events.txt', 'r') as file:
+    with open('kb/events.txt', 'r') as file:
         event_data = file.read()
-    with open('src/agents/data_agent/kb/schema.txt', 'r') as file:
+    with open('kb/schema.txt', 'r') as file:
         schema = file.read()
 
     state = DataQuerryState(

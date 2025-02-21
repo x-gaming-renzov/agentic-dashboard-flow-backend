@@ -5,7 +5,8 @@ from langchain_openai import ChatOpenAI
 
 from ..prompts.prompts import *
 from ..states.states import *
-from ..utils.databases import get_mongo_db as get_db
+from ....utils.db_pool import execute_sql_query
+from ....utils.mongodb import get_mongo_db
 
 from ...data_agent.agent import get_metrics_dicts
 
@@ -91,7 +92,7 @@ def get_l2_metrics_from_isntructions(L2MetricsState : L2MetricsState) -> L2Metri
 def ask_metric_agent_to_display_chart_node(instructions: str) -> ShouldGenerateNewMetric | None:
     generator_model = model.with_structured_output(NewMetricResponse)
     
-    mongo_db = get_db()['metrics']
+    mongo_db = get_mongo_db()['metrics']
     metrics = list(mongo_db.find())
 
     generator = display_metric_prompt | generator_model

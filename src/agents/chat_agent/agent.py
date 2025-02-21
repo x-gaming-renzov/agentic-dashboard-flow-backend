@@ -2,7 +2,8 @@ from langgraph.graph import StateGraph, START, END
 from langchain_core.messages import AIMessage, HumanMessage
 
 from .nodes.nodes import *
-from .utils.databases import get_mongo_db as get_mongo_db_from_chat_agent
+from ...utils.db_pool import execute_sql_query
+from ...utils.mongodb import get_mongo_db
 from ..generate_l2.agent import ask_metric_agent_to_display_chart_node, register_metrics
 from ..generate_l2.states.states import ShouldGenerateNewMetric
 
@@ -22,7 +23,7 @@ def get_graph():
     return graph.compile()
 
 def chat_agent(chat_id : str, human_message: str):
-    mongo_db = get_mongo_db_from_chat_agent()
+    mongo_db = get_mongo_db()
     chat = mongo_db['chats'].find_one({"_id" : chat_id})
     graph = get_graph()
 
@@ -58,7 +59,7 @@ def chat_agent(chat_id : str, human_message: str):
 def ask_db_agent(instructions : str, chat_id : str):
     data, query_code = get_data_from_db(query = instructions)
 
-    mongo_db = get_mongo_db_from_chat_agent()
+    mongo_db = get_mongo_db()
     chat = mongo_db['chats'].find_one({"_id" : chat_id})
     graph = get_graph()
 
@@ -93,7 +94,7 @@ your instructions was : {instructions}
     return response
 
 def ask_idea_agent_to_generate_idea(instructions : str, chat_id : str):
-    mongo_db = get_mongo_db_from_chat_agent()
+    mongo_db = get_mongo_db()
     chat = mongo_db['chats'].find_one({"_id" : chat_id})
 
     metric_ids = chat['metric_ids']
@@ -107,7 +108,7 @@ def ask_idea_agent_to_generate_idea(instructions : str, chat_id : str):
     }
 
 def ask_metric_agent_to_display_chart(instructions : str, displayed_metrics : list[str], chat_id: str):
-    mongo_db = get_mongo_db_from_chat_agent()
+    mongo_db = get_mongo_db()
     chat = mongo_db['chats'].find_one({"_id" : chat_id})
     response = ask_metric_agent_to_display_chart_node(instructions=instructions)
 

@@ -10,7 +10,6 @@ from ..states.states import *
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 
 dotenv.load_dotenv()
-#db_uri = postgresql://xgaming:Xgaming123$@34.131.81.20:5432/mixpanel
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
 

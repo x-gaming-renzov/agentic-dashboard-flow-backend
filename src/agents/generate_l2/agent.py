@@ -3,7 +3,7 @@ from termcolor import colored
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .nodes.nodes import *
-from .utils.databases import *
+from ...utils.mongodb import get_mongo_db
 from ..data_agent.agent import get_data_from_db
 
 def get_graph():

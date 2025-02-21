@@ -1,7 +1,8 @@
 from langgraph.graph import StateGraph, START, END
 
 from .nodes.nodes import *
-from .utils.databases import *
+from ...utils.db_pool import execute_sql_query
+from ...utils.mongodb import get_mongo_db
 
 def get_graph():
     graph = StateGraph(SegmentState)

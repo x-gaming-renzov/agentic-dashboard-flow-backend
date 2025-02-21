@@ -9,20 +9,18 @@ from ..prompts.prompts import *
 from ..states.states import *
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
-from ..utils.databases import *
+from ....utils.db_pool import execute_sql_query
+from ....utils.mongodb import get_mongo_db
 from ..utils.chatutils import *
 
 from ...item_agent.agent import get_items
 
 dotenv.load_dotenv()
-#db_uri = postgresql://xgaming:Xgaming123$@34.131.81.20:5432/mixpanel
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
-#model_large = OllamaLLM(model="deepseek-r1:8b")
 model = ChatOpenAI(model="gpt-4o-mini")
-#model = ChatOpenAI(model="deepseek/deepseek-chat", api_key="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", base_url="https://openrouter.ai/api/v1")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def get_offer_content_node(ExperimentState : ExperimentState) -> ExperimentState:

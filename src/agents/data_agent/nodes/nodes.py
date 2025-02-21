@@ -5,7 +5,9 @@ from langchain_openai import ChatOpenAI
 
 from ..prompts.prompts import *
 from ..states.states import *
-from ..utils.databases import execute_sql_query
+
+from ....utils.db_pool import execute_sql_query
+
 import traceback
 
 from langchain_community.tools.sql_database.tool import QuerySQLDatabaseTool

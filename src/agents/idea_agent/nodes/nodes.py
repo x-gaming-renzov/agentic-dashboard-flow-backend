@@ -3,24 +3,21 @@ from termcolor import colored
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
-from langchain_ollama import ChatOllama
 
 from ..prompts.prompts import *
 from ..states.states import *
-from ..utils.databases import *
+from ....utils.db_pool import execute_sql_query
+from ....utils.mongodb import get_mongo_db
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
 
 dotenv.load_dotenv()
-#db_uri = postgresql://xgaming:Xgaming123$@34.131.81.20:5432/mixpanel
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising nodes", "white")) 
 
 print(colored(f"Status: ", "yellow"), colored(f"Initialising ChatOpenAI", "white"))
 model_large = ChatOpenAI(model="gpt-4o")
 model = ChatOpenAI(model="gpt-4o-mini")
-#model_large = ChatOllama(model="llama3.2:3b")
-#model = ChatOllama(model="llama3.2:3b")
 print(colored(f"Status: ", "green"), colored(f"ChatOpenAI initialised", "white"))
 
 def generate_factors(IdeaState: IdeaState) -> IdeaState:

@@ -2,7 +2,7 @@ from langgraph.graph import StateGraph, START, END
 
 from .nodes.nodes import *
 from .states.states import *
-from .utils.databases import *
+from ...utils.db_pool import execute_sql_query
 
 def get_graph():
     graph = StateGraph(ExperimentState)

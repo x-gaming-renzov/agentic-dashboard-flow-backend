@@ -6,7 +6,8 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 from ..prompts.prompts import *
 from ..states.states import *
-from ..utils.databases import *
+from ....utils.db_pool import execute_sql_query
+from ....utils.mongodb import get_mongo_db
 from ..utils.kbutils import format_armor_enchantments
 
 from ...data_agent.agent import get_metrics_dicts, generate_metric_plot
