@@ -160,6 +160,9 @@ def create_experiment_handler(chat_id, segment_ids, user_id):
         logging.info(f"Cohort A: {cohort_A}")
         logging.info(f"Cohort B: {cohort_B}")
 
+        if not offer_ids:
+            logging.error("No offers returned from get_offer_cohorts")
+            return {"error": "No valid offers found."}, 400
         # Retrieve offer details from the database for the given offer IDs.
         # get_offer returns a mapping of offer id to a dictionary of details.
         offer_details = get_offer(offer_ids)
