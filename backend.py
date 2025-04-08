@@ -135,7 +135,7 @@ def generate_direct_chat(message:str):
                               num_ideas=1,
                               human_remark=idea_remark)
     
-    logging.info(f"ideas : {ideas}")
+    # logging.info(f"ideas : {ideas}")
     idea_ids = register_ideas(ideas_details=ideas['ideas_details'],
                segments=ideas['segments'],
                factors=ideas['factors'])
@@ -144,7 +144,7 @@ def generate_direct_chat(message:str):
     logging.info(f"chat_remark : {chat_remark}")
     
     offers = get_offers(metric_ids=metrics, segment_ids=segments, human_remark=chat_remark, idea_ids=idea_ids)
-    logging.info(f"offers : {offers}")
+    # logging.info(f"offers : {offers}")
 
     chat_id = register_new_chat(offers)
     logging.info(f"chat_id : {chat_id}")
