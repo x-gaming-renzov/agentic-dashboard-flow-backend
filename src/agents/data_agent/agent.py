@@ -63,8 +63,7 @@ def get_data_from_db(query : str):
 
 def fetch_metric_data(id : str) -> pd.DataFrame:
     mongo_db = get_mongo_db()
-    metric_dict = mongo_db['charliedemo']['metrics'].find_one({"_id": id})
-
+    metric_dict = mongo_db['metrics'].find_one({"_id": id})
     if metric_dict is None:
         return None
     
@@ -73,7 +72,8 @@ def fetch_metric_data(id : str) -> pd.DataFrame:
     except Exception as e:
         print(f"Error: {e}")
         data, query = get_data_from_db(f"Make sure the query is correct. Error: {e}. If not, correct it and return the data. Metric detail : {metric_dict}")
-        mongo_db['charliedemo']['metrics'].update_one({"_id": id}, {"$set": {"query": query}})
+        mongo_db = get_mongo_db()
+        mongo_db['metrics'].update_one({"_id": id}, {"$set": {"query": query}})
         traceback.print_exc()
     
     if metric_dict['chartType'] == 'line':
@@ -125,7 +125,8 @@ def generate_metric_plot(ids : list) -> List[str]:
     plots = []
     def _get_plot(id :str):
         metric_data = fetch_metric_data(id)
-        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+        mongo_db = get_mongo_db()
+        metric_dict = mongo_db['metrics'].find_one({"_id": id})
         if metric_data is None:
             return "Metric not found"
         
@@ -160,14 +161,16 @@ def generate_metric_plot(ids : list) -> List[str]:
         futures = [executor.submit(_get_plot, id) for id in ids]
     """for id in ids:
         metric_data = fetch_metric_data(id)
-        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+            mongo_db = get_mongo_db()
+    metric_dict = mongo_db['metrics'].find_one({"_id": id})
         if metric_data is None:
             return "Metric not found"
         
         if metric_data.shape[0] == 0:
             return "No data found for the metric"
 
-        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+            mongo_db = get_mongo_db()
+    metric_dict = mongo_db['metrics'].find_one({"_id": id})
         title = metric_dict['name']
         if metric_dict['chartType'] == 'line':
             x = metric_data[metric_data.columns[0]]
@@ -237,7 +240,8 @@ def get_base64_plot(plot_type, x, y=None, labels=None, categories=None, title=No
 def get_metrics_dicts(ids : list) -> List[Dict[str, Any]]:
     metrics = []
     for id in ids:
-        metric_dict = get_mongo_db()['charliedemo']['metrics'].find_one({"_id": id})
+        mongo_db = get_mongo_db()
+        metric_dict = mongo_db['metrics'].find_one({"_id": id})
         if metric_dict is None:
             return "Metric not found"
         metrics.append(metric_dict)
