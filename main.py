@@ -152,6 +152,9 @@ def generate_direct(req: https_fn.Request) -> https_fn.Response:
     Endpoint to generate new chat, based on a single message
     """
     try:
+        if req.method != 'POST':
+            logger.warning("Invalid method for dashboard: %s", req.method)
+            return ("Method not allowed", 405)
         # Parse the incoming request data
         data = req.get_json()
         message = data.get('message')
